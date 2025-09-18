@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import apcLogo from "@/assets/apc-logo.png";
 
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -10,6 +11,7 @@ const Header = () => {
   const navigation = [
     { name: "Home", href: "/" },
     { name: "About Us", href: "/about" },
+    { name: "Products", href: "/products" },
     { name: "Quality & Compliance", href: "/quality" },
     { name: "Careers", href: "/careers" },
     { name: "News", href: "/news" },
@@ -23,11 +25,8 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-2">
-            <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-              <span className="text-white font-bold text-sm">APC</span>
-            </div>
-            <span className="text-xl font-bold text-foreground">AOE Pharma Corporation</span>
+          <Link to="/" className="flex items-center space-x-3">
+            <img src={apcLogo} alt="APC Pharma Corporation" className="h-10 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}
@@ -49,11 +48,11 @@ const Header = () => {
 
           {/* CTA Buttons */}
           <div className="hidden md:flex items-center space-x-4">
-            <Button variant="outline" size="sm">
-              Explore Products
+            <Button variant="outline" size="sm" asChild>
+              <Link to="/products">Explore Products</Link>
             </Button>
-            <Button size="sm" className="gradient-primary text-white">
-              Partner With Us
+            <Button size="sm" className="gradient-primary text-white" asChild>
+              <Link to="/contact">Partner With Us</Link>
             </Button>
           </div>
 
@@ -87,11 +86,11 @@ const Header = () => {
                 </Link>
               ))}
               <div className="px-3 py-2 space-y-2">
-                <Button variant="outline" size="sm" className="w-full">
-                  Explore Products
+                <Button variant="outline" size="sm" className="w-full" asChild>
+                  <Link to="/products">Explore Products</Link>
                 </Button>
-                <Button size="sm" className="w-full gradient-primary text-white">
-                  Partner With Us
+                <Button size="sm" className="w-full gradient-primary text-white" asChild>
+                  <Link to="/contact">Partner With Us</Link>
                 </Button>
               </div>
             </div>

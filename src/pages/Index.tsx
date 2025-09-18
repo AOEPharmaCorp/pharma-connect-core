@@ -47,20 +47,20 @@ const Index = () => {
         <div className="container mx-auto px-4">
           <div className="max-w-6xl mx-auto text-center space-y-8">
             <h1 className="text-4xl md:text-7xl font-bold leading-tight">
-              Rising Strong in
+              Premier B2B
               <br />
-              <span className="text-white/90">Global Healthcare</span>
+              <span className="text-white/90">Pharmaceutical Partner</span>
             </h1>
             <p className="text-xl md:text-2xl text-white/90 leading-relaxed max-w-3xl mx-auto">
-              Leading provider of high-quality, affordable healthcare solutions globally. 
-              Enhancing quality of life through innovative pharmaceutical products since 2018.
+              APC Pharma Corporation - Trusted by distributors, hospitals, and regulatory officials across 40+ countries. 
+              WHO-GMP certified products with comprehensive regulatory support.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-              <Button size="lg" variant="secondary" className="text-primary">
-                Explore Our Products
+              <Button size="lg" variant="secondary" className="text-primary" asChild>
+                <Link to="/products">Explore Product Portfolio</Link>
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
-                Contact Us
+              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary" asChild>
+                <Link to="/contact">Request Partnership</Link>
               </Button>
             </div>
           </div>
@@ -100,10 +100,10 @@ const Index = () => {
               <Card className="text-center shadow-card">
                 <CardContent className="pt-8">
                   <Target className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-3">Our Mission</h3>
+                  <h3 className="text-xl font-semibold mb-3">International Reach</h3>
                   <p className="text-muted-foreground">
-                    To make a positive impact on the world by enhancing the quality of life 
-                    for patients and their families through our products and services.
+                    Serving distributors and healthcare institutions across Asia, GCC, West Africa, 
+                    and Eastern Europe with reliable pharmaceutical supply chains.
                   </p>
                 </CardContent>
               </Card>
@@ -111,10 +111,10 @@ const Index = () => {
               <Card className="text-center shadow-card">
                 <CardContent className="pt-8">
                   <Globe className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-3">Our Vision</h3>
+                  <h3 className="text-xl font-semibold mb-3">Quality Assurance</h3>
                   <p className="text-muted-foreground">
-                    To be a driving force for positive change in the world of healthcare, 
-                    leading innovation and excellence in pharmaceutical solutions.
+                    WHO-GMP, EU GMP, USFDA, GLP, and ISO certified manufacturing partners 
+                    ensuring the highest pharmaceutical quality standards.
                   </p>
                 </CardContent>
               </Card>
@@ -122,10 +122,10 @@ const Index = () => {
               <Card className="text-center shadow-card">
                 <CardContent className="pt-8">
                   <Award className="h-12 w-12 text-primary mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-3">Our Goals</h3>
+                  <h3 className="text-xl font-semibold mb-3">Regulatory Support</h3>
                   <p className="text-muted-foreground">
-                    To become a leading global provider of high-quality, affordable, 
-                    and accessible healthcare solutions across all markets we serve.
+                    Complete regulatory documentation and expert support for smooth 
+                    market approvals and procurement processes worldwide.
                   </p>
                 </CardContent>
               </Card>
@@ -175,22 +175,22 @@ const Index = () => {
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold">
-              Ready to Partner With Us?
+              Ready to Become Our B2B Partner?
             </h2>
             <p className="text-xl text-white/90 leading-relaxed">
-              Join us in our mission to make quality healthcare accessible worldwide. 
-              Explore partnership opportunities and discover how we can work together.
+              Join our network of trusted distributors and healthcare partners. Access premium 
+              pharmaceutical products with comprehensive regulatory support and reliable supply chains.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center pt-6">
-              <Link to="/about">
+              <Link to="/contact">
                 <Button size="lg" variant="secondary" className="text-primary">
-                  Learn More About Us
+                  Request Partnership Information
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
-              <Link to="/contact">
+              <Link to="/products">
                 <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
-                  Contact Our Team
+                  Browse Product Catalog
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
               </Link>
