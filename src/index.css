@@ -17,8 +17,9 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 220 100% 50%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 220 100% 95%;
 
     --secondary: 210 40% 96.1%;
     --secondary-foreground: 222.2 47.4% 11.2%;
@@ -26,17 +27,40 @@ All colors MUST be HSL.
     --muted: 210 40% 96.1%;
     --muted-foreground: 215.4 16.3% 46.9%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 210 100% 98%;
+    --accent-foreground: 220 100% 50%;
 
     --destructive: 0 84.2% 60.2%;
     --destructive-foreground: 210 40% 98%;
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --ring: 220 100% 50%;
 
-    --radius: 0.5rem;
+    --radius: 0.75rem;
+
+    /* Pharmaceutical-specific design tokens */
+    --pharma-blue: 220 100% 50%;
+    --pharma-blue-light: 220 100% 95%;
+    --pharma-blue-dark: 220 100% 40%;
+    --pharma-green: 150 60% 45%;
+    --pharma-green-light: 150 60% 95%;
+    --success: 150 60% 45%;
+    --trust: 220 100% 50%;
+    
+    /* Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--pharma-blue)), hsl(var(--pharma-blue-dark)));
+    --gradient-subtle: linear-gradient(180deg, hsl(var(--background)), hsl(var(--accent)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--pharma-blue)) 0%, hsl(var(--pharma-blue-dark)) 100%);
+
+    /* Shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--pharma-blue) / 0.2);
+    --shadow-card: 0 4px 20px -5px hsl(var(--pharma-blue) / 0.1);
+    --shadow-glow: 0 0 40px hsl(var(--pharma-blue) / 0.15);
+
+    /* Animations */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-spring: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 
     --sidebar-background: 0 0% 98%;
 
@@ -65,8 +89,9 @@ All colors MUST be HSL.
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
+    --primary: 220 100% 60%;
     --primary-foreground: 222.2 47.4% 11.2%;
+    --primary-light: 220 100% 10%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -82,7 +107,22 @@ All colors MUST be HSL.
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 220 100% 60%;
+
+    /* Dark mode pharmaceutical colors */
+    --pharma-blue: 220 100% 60%;
+    --pharma-blue-light: 220 100% 10%;
+    --pharma-blue-dark: 220 100% 50%;
+    --pharma-green: 150 60% 55%;
+    --pharma-green-light: 150 60% 10%;
+
+    /* Dark gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(var(--pharma-blue)), hsl(var(--pharma-blue-dark)));
+    --gradient-hero: linear-gradient(135deg, hsl(var(--pharma-blue)) 0%, hsl(var(--pharma-blue-dark)) 100%);
+
+    /* Dark shadows */
+    --shadow-elegant: 0 10px 30px -10px hsl(var(--pharma-blue) / 0.3);
+    --shadow-card: 0 4px 20px -5px hsl(var(--pharma-blue) / 0.2);
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,6 +140,36 @@ All colors MUST be HSL.
   }
 
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground font-sans;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold leading-tight;
+  }
+}
+
+@layer utilities {
+  .gradient-primary {
+    background: var(--gradient-primary);
+  }
+
+  .gradient-hero {
+    background: var(--gradient-hero);
+  }
+
+  .shadow-elegant {
+    box-shadow: var(--shadow-elegant);
+  }
+
+  .shadow-card {
+    box-shadow: var(--shadow-card);
+  }
+
+  .transition-smooth {
+    transition: var(--transition-smooth);
+  }
+
+  .transition-spring {
+    transition: var(--transition-spring);
   }
 }
