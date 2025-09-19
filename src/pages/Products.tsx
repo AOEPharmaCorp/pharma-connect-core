@@ -1,59 +1,203 @@
-import { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from 'react';
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Download, Phone, Mail } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
+import { Skeleton } from "@/components/ui/skeleton";
+import { useToast } from "@/hooks/use-toast";
+import { supabase } from "@/integrations/supabase/client";
+import { Download, Search, Filter, Package, ShoppingCart, Eye, AlertCircle, Phone, Mail } from "lucide-react";
 
-// Product data structure based on the uploaded document
-const products = [
-  { id: 1, name: "Lidocaine and Epinephrine Injection", strength: "1%w/v and 1:100000", form: "Injectable", category: "Anaesthetic" },
-  { id: 2, name: "Lidocain and adrenaline Injection", strength: "2% + 1:50000", form: "Injectable", category: "Anaesthetic" },
-  { id: 3, name: "Lidocaine and Prilocaine Cream", strength: "2%w/w + 2.5%w/w", form: "Creams/Ointment", category: "Anaesthetic" },
-  { id: 4, name: "Nimesulide Injection", strength: "100mg/ml", form: "Injectable", category: "Analgesics Anti-inflammatory" },
-  { id: 5, name: "Caffeine and Ephedrine and Paracetamol Tablets", strength: "20Mg + 6mg + 200mg", form: "Tablets", category: "Analgesics Anti-inflammatory" },
-  { id: 6, name: "Dried Aluminum Hydroxide Gel Tablets", strength: "500mg", form: "Tablets", category: "Antacid" },
-  { id: 7, name: "Magnesium Trisilicate Tablets", strength: "500mg", form: "Tablets", category: "Antacid" },
-  { id: 8, name: "Simethicone with Dill Oil Solution", strength: "1%w/v+0.5% v/v", form: "Liquid Orals", category: "Antacid" },
-  { id: 9, name: "Magnesium Trisilicate Syrup", strength: "3.33%", form: "Liquid Orals", category: "Antacid" },
-  { id: 10, name: "Aluminium and Magnesium Hydroxide Suspension", strength: "523.5 mg+598.5 mg/15ml", form: "Liquid Orals", category: "Antacid" },
-  { id: 11, name: "Calcium Carbonate Chewable Tablets", strength: "1.25 g", form: "Tablets", category: "Antacid" },
-  { id: 12, name: "Rabeprazole and Domperidone Tablets", strength: "20mg+30mg", form: "Tablets", category: "Antacid" },
-  { id: 13, name: "Palonosetron Hydrochloride Injection", strength: "0.05mg/ml", form: "Injectable", category: "Antacid" },
-  { id: 14, name: "Esomeprazole Sodium For Injection", strength: "40mg", form: "Injectable", category: "Antacid" },
-  { id: 15, name: "Omeprazole Capsules", strength: "20mg", form: "Capsules", category: "Antacid" },
-  // Additional products for demonstration - in real implementation, parse all from document
-  { id: 16, name: "Amoxicillin Capsules", strength: "500mg", form: "Capsules", category: "Antibiotics" },
-  { id: 17, name: "Ciprofloxacin Tablets", strength: "500mg", form: "Tablets", category: "Antibiotics" },
-  { id: 18, name: "Azithromycin Tablets", strength: "250mg", form: "Tablets", category: "Antibiotics" },
-  { id: 19, name: "Metformin Tablets", strength: "500mg", form: "Tablets", category: "Antidiabetic" },
-  { id: 20, name: "Insulin Injection", strength: "100 IU/ml", form: "Injectable", category: "Antidiabetic" },
-  { id: 21, name: "Amlodipine Tablets", strength: "5mg", form: "Tablets", category: "Cardiovascular" },
-  { id: 22, name: "Atorvastatin Tablets", strength: "20mg", form: "Tablets", category: "Cardiovascular" },
-  { id: 23, name: "Doxorubicin Injection", strength: "50mg", form: "Injectable", category: "Oncology" },
-  { id: 24, name: "Carboplatin Injection", strength: "150mg", form: "Injectable", category: "Oncology" },
-  { id: 25, name: "Paclitaxel Injection", strength: "100mg", form: "Injectable", category: "Oncology" },
-];
+interface Product {
+  id: string;
+  serial_number?: number;
+  name: string;
+  dosage_form: string;
+  category: string;
+  moq: string;
+  delivery_timeline: string;
+  pricing: string;
+  created_at: string;
+  updated_at: string;
+}
 
-const categories = Array.from(new Set(products.map(p => p.category))).sort();
-const dosageForms = Array.from(new Set(products.map(p => p.form))).sort();
-
-export default function Products() {
+const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("all");
-  const [selectedForm, setSelectedForm] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedForm, setSelectedForm] = useState("");
+  const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showAll, setShowAll] = useState(false);
+  const [initializing, setInitializing] = useState(false);
+  const { toast } = useToast();
+
+  // Initialize products from database
+  useEffect(() => {
+    const initializeProducts = async () => {
+      try {
+        setInitializing(true);
+        
+        // Check if we need to populate the database
+        const { data: existingProducts, error: checkError } = await supabase
+          .from('products')
+          .select('id')
+          .limit(5);
+
+        if (checkError) {
+          throw checkError;
+        }
+
+        // If no products exist, call the populate function
+        if (!existingProducts || existingProducts.length === 0) {
+          try {
+            const response = await fetch(`https://mtopxuadayufyaxvglqx.supabase.co/functions/v1/populate-products`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im10b3B4dWFkYXl1ZnlheHZnbHF4Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NTgyNzIxODUsImV4cCI6MjA3Mzg0ODE4NX0.DcO_nIyjU36H_GZ3fkmOB1nKxybx2YD2KoIxrraQHEE`,
+              },
+            });
+
+            if (response.ok) {
+              const result = await response.json();
+              console.log('Database populated:', result);
+              toast({
+                title: "Products Loaded",
+                description: `${result.totalInserted || 'Products'} have been loaded into the catalog.`,
+              });
+            }
+          } catch (populateError) {
+            console.log('Populate function not available, using fallback data...');
+          }
+        }
+
+        // Fetch all products from database
+        const { data, error } = await supabase
+          .from('products')
+          .select('*')
+          .order('category', { ascending: true })
+          .order('name', { ascending: true });
+
+        if (error) {
+          throw error;
+        }
+
+        setProducts(data || []);
+      } catch (error) {
+        console.error('Error loading products:', error);
+        toast({
+          title: "Error loading products",
+          description: "Please try refreshing the page.",
+          variant: "destructive",
+        });
+      } finally {
+        setLoading(false);
+        setInitializing(false);
+      }
+    };
+
+    initializeProducts();
+  }, [toast]);
+
+  const categories = useMemo(() => {
+    return [...new Set(products.map(product => product.category))].sort();
+  }, [products]);
+
+  const dosageForms = useMemo(() => {
+    return [...new Set(products.map(product => product.dosage_form))].sort();
+  }, [products]);
 
   const filteredProducts = useMemo(() => {
-    return products.filter(product => {
+    const filtered = products.filter(product => {
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           product.strength.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-      const matchesForm = selectedForm === "all" || product.form === selectedForm;
+                          product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                          product.dosage_form.toLowerCase().includes(searchTerm.toLowerCase());
+      const matchesCategory = selectedCategory === "" || product.category === selectedCategory;
+      const matchesForm = selectedForm === "" || product.dosage_form === selectedForm;
       
       return matchesSearch && matchesCategory && matchesForm;
     });
-  }, [searchTerm, selectedCategory, selectedForm]);
+
+    return filtered;
+  }, [products, searchTerm, selectedCategory, selectedForm]);
+
+  // Group products by category and show 25 per category initially
+  const categorizedProducts = useMemo(() => {
+    const grouped = filteredProducts.reduce((acc, product) => {
+      if (!acc[product.category]) {
+        acc[product.category] = [];
+      }
+      acc[product.category].push(product);
+      return acc;
+    }, {} as Record<string, Product[]>);
+
+    // If searching or filtering, show all results
+    if (searchTerm || selectedCategory || selectedForm) {
+      return Object.entries(grouped).map(([category, categoryProducts]) => ({
+        category,
+        products: categoryProducts,
+        showingCount: categoryProducts.length,
+        totalCount: categoryProducts.length
+      }));
+    }
+
+    // Otherwise, show 25 per category
+    return Object.entries(grouped).map(([category, categoryProducts]) => ({
+      category,
+      products: showAll ? categoryProducts : categoryProducts.slice(0, 25),
+      showingCount: showAll ? categoryProducts.length : Math.min(25, categoryProducts.length),
+      totalCount: categoryProducts.length
+    }));
+  }, [filteredProducts, searchTerm, selectedCategory, selectedForm, showAll]);
+
+  const clearFilters = () => {
+    setSearchTerm("");
+    setSelectedCategory("");
+    setSelectedForm("");
+  };
+
+  const totalDisplayed = categorizedProducts.reduce((sum, cat) => sum + cat.showingCount, 0);
+  const totalAvailable = products.length;
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background">
+        <section className="bg-gradient-to-b from-primary/5 to-background py-16">
+          <div className="container mx-auto px-4">
+            <div className="text-center mb-12">
+              <Package className="h-16 w-16 mx-auto mb-6 text-primary" />
+              <h1 className="text-4xl md:text-6xl font-bold mb-6">
+                Our Product Portfolio
+              </h1>
+              <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
+                {initializing ? "Loading our comprehensive pharmaceutical catalog..." : "Discover our comprehensive range of high-quality pharmaceutical products"}
+              </p>
+            </div>
+          </div>
+        </section>
+        
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {[...Array(6)].map((_, i) => (
+                <Card key={i}>
+                  <CardHeader>
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-4 w-2/3" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -61,10 +205,11 @@ export default function Products() {
       <section className="bg-gradient-to-b from-primary/5 to-background py-16">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">
+            <Package className="h-16 w-16 mx-auto mb-6 text-primary" />
+            <h1 className="text-4xl md:text-6xl font-bold mb-6">
               Comprehensive Product Portfolio
             </h1>
-            <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
+            <p className="text-xl md:text-2xl text-muted-foreground max-w-3xl mx-auto">
               Explore our extensive range of pharmaceutical products across multiple therapeutic categories, 
               manufactured to the highest international quality standards.
             </p>
@@ -73,68 +218,62 @@ export default function Products() {
       </section>
 
       {/* Search and Filter Section */}
-      <section className="py-8 border-b">
+      <section className="py-8 border-b bg-muted/20">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-4 items-end">
-            <div className="md:col-span-2">
-              <label htmlFor="search" className="block text-sm font-medium text-foreground mb-2">
-                Search Products
-              </label>
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  id="search"
-                  type="text"
-                  placeholder="Search by product name or strength..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
-              </div>
+          <div className="flex flex-col md:flex-row gap-4 mb-6">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
+              <Input
+                placeholder="Search products by name, category, or dosage form..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-10"
+              />
             </div>
             
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Category
-              </label>
-              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                <SelectTrigger>
-                  <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="All Categories" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>{category}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+              <SelectTrigger className="md:w-64">
+                <Filter className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Filter by category" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Categories</SelectItem>
+                {categories.map(category => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
 
-            <div>
-              <label className="block text-sm font-medium text-foreground mb-2">
-                Dosage Form
-              </label>
-              <Select value={selectedForm} onValueChange={setSelectedForm}>
-                <SelectTrigger>
-                  <Filter className="h-4 w-4 mr-2" />
-                  <SelectValue placeholder="All Forms" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Forms</SelectItem>
-                  {dosageForms.map(form => (
-                    <SelectItem key={form} value={form}>{form}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+            <Select value={selectedForm} onValueChange={setSelectedForm}>
+              <SelectTrigger className="md:w-64">
+                <Package className="h-4 w-4 mr-2" />
+                <SelectValue placeholder="Filter by dosage form" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="">All Forms</SelectItem>
+                {dosageForms.map(form => (
+                  <SelectItem key={form} value={form}>
+                    {form}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
 
-          <div className="flex justify-between items-center mt-6">
-            <p className="text-muted-foreground">
-              Showing {filteredProducts.length} of {products.length} products
-            </p>
-            <Button variant="outline" className="gap-2">
+          <div className="flex justify-between items-center">
+            <div className="space-y-1">
+              <p className="text-muted-foreground">
+                Showing {totalDisplayed} of {totalAvailable} products
+              </p>
+              {!showAll && totalDisplayed < totalAvailable && !searchTerm && !selectedCategory && !selectedForm && (
+                <p className="text-sm text-muted-foreground">
+                  Displaying 25 products per category. <Button variant="link" className="p-0 h-auto text-primary" onClick={() => setShowAll(true)}>Show all products</Button>
+                </p>
+              )}
+            </div>
+            <Button variant="outline" className="flex items-center gap-2">
               <Download className="h-4 w-4" />
               Download Product Catalog
             </Button>
@@ -142,60 +281,91 @@ export default function Products() {
         </div>
       </section>
 
-      {/* Products Grid */}
+      {/* Products Grid by Category */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => (
-              <Card key={product.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-lg leading-tight">{product.name}</CardTitle>
-                    <Badge variant="secondary" className="shrink-0">
-                      {product.form}
+          {categorizedProducts.length > 0 ? (
+            <div className="space-y-16">
+              {categorizedProducts.map(({ category, products: categoryProducts, showingCount, totalCount }) => (
+                <div key={category}>
+                  <div className="flex justify-between items-center mb-8">
+                    <h2 className="text-3xl font-bold text-primary">{category}</h2>
+                    <Badge variant="secondary" className="text-sm px-3 py-1">
+                      {showingCount} of {totalCount} products
                     </Badge>
                   </div>
-                  <CardDescription className="text-primary font-semibold">
-                    {product.strength}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div>
-                      <span className="text-sm text-muted-foreground">Category:</span>
-                      <Badge variant="outline" className="ml-2">
-                        {product.category}
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm" className="flex-1">
-                        Request Quote
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
-                        View Details
-                      </Button>
-                    </div>
+                  
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {categoryProducts.map(product => (
+                      <Card key={product.id} className="hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                        <CardHeader>
+                          <div className="flex justify-between items-start gap-2">
+                            <CardTitle className="text-lg leading-tight flex-1">{product.name}</CardTitle>
+                            <Badge variant="secondary" className="shrink-0">
+                              {product.dosage_form}
+                            </Badge>
+                          </div>
+                          <CardDescription>
+                            Serial #: {product.serial_number || 'N/A'}
+                          </CardDescription>
+                        </CardHeader>
+                        <CardContent>
+                          <div className="space-y-4">
+                            <div className="p-3 bg-muted/50 rounded-lg space-y-2 text-sm">
+                              <div className="flex justify-between">
+                                <span className="font-medium text-muted-foreground">MOQ:</span>
+                                <span className="text-right flex-1 ml-2">{product.moq}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="font-medium text-muted-foreground">Delivery:</span>
+                                <span className="text-right flex-1 ml-2">{product.delivery_timeline}</span>
+                              </div>
+                              <div className="flex justify-between">
+                                <span className="font-medium text-muted-foreground">Pricing:</span>
+                                <span className="text-right flex-1 ml-2">{product.pricing}</span>
+                              </div>
+                            </div>
+                          </div>
+                        </CardContent>
+                        <CardFooter className="flex gap-2">
+                          <Button size="sm" variant="default" className="flex-1">
+                            <ShoppingCart className="h-4 w-4 mr-2" />
+                            Request Quote
+                          </Button>
+                          <Button size="sm" variant="outline">
+                            <Eye className="h-4 w-4 mr-2" />
+                            Details
+                          </Button>
+                        </CardFooter>
+                      </Card>
+                    ))}
                   </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {filteredProducts.length === 0 && (
-            <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">
-                No products found matching your search criteria.
+                  
+                  {!showAll && showingCount < totalCount && !searchTerm && !selectedCategory && !selectedForm && (
+                    <div className="text-center mt-8">
+                      <Button 
+                        variant="outline" 
+                        size="lg"
+                        onClick={() => setShowAll(true)}
+                        className="flex items-center gap-2"
+                      >
+                        <Package className="h-4 w-4" />
+                        Show All {totalCount} {category} Products
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="text-center py-16">
+              <AlertCircle className="h-16 w-16 mx-auto text-muted-foreground mb-6" />
+              <h3 className="text-2xl font-semibold mb-4">No products found</h3>
+              <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                No products match your current search criteria. Try adjusting your filters or search terms.
               </p>
-              <Button 
-                variant="outline" 
-                className="mt-4"
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedCategory("all");
-                  setSelectedForm("all");
-                }}
-              >
-                Clear Filters
+              <Button onClick={clearFilters} variant="outline" size="lg">
+                Clear All Filters
               </Button>
             </div>
           )}
@@ -226,4 +396,6 @@ export default function Products() {
       </section>
     </div>
   );
-}
+};
+
+export default Products;
