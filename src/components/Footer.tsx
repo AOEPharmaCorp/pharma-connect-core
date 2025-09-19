@@ -10,7 +10,7 @@ const Footer = () => {
           <div className="space-y-4">
             <div className="flex items-center space-x-2">
               <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-                <span className="text-white font-bold text-sm">APC</span>
+                <span className="font-bold text-sm text-blue-800">APC</span>
               </div>
               <span className="text-lg font-bold">AOE Pharma Corporation</span>
             </div>
