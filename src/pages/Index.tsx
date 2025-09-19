@@ -2,46 +2,52 @@ import { Globe, Award, Users, Target, ArrowRight, CheckCircle, Building, Heart, 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-
 const Index = () => {
-  const stats = [
-    { label: "Global Reach", value: "Asia, W. Africa, E. EU & GCC", icon: Globe },
-    { label: "Fully Compliant", value: "EU, USFDA, WHO GMP", icon: Award },
-    { label: "Since", value: "2018", icon: Target },
-    { label: "Established", value: "Trusted Partner", icon: Users },
-  ];
-
-  const productCategories = [
-    { name: "Pharmaceutical Products", percentage: "45%" },
-    { name: "Generics & Differentiated", percentage: "33%" },
-    { name: "FMCG & Cosmeceuticals", percentage: "22%" },
-  ];
-
-  const services = [
-    {
-      title: "Specialty Medicines",
-      description: "Advanced therapeutic solutions",
-      icon: Heart
-    },
-    {
-      title: "Generic Medications", 
-      description: "Affordable treatment options",
-      icon: Shield
-    },
-    {
-      title: "OTC Medications",
-      description: "Over-the-counter solutions",
-      icon: CheckCircle
-    },
-    {
-      title: "Active Ingredients",
-      description: "Quality API manufacturing",
-      icon: Building
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const stats = [{
+    label: "Global Reach",
+    value: "Asia, W. Africa, E. EU & GCC",
+    icon: Globe
+  }, {
+    label: "Fully Compliant",
+    value: "EU, USFDA, WHO GMP",
+    icon: Award
+  }, {
+    label: "Since",
+    value: "2018",
+    icon: Target
+  }, {
+    label: "Established",
+    value: "Trusted Partner",
+    icon: Users
+  }];
+  const productCategories = [{
+    name: "Pharmaceutical Products",
+    percentage: "45%"
+  }, {
+    name: "Generics & Differentiated",
+    percentage: "33%"
+  }, {
+    name: "FMCG & Cosmeceuticals",
+    percentage: "22%"
+  }];
+  const services = [{
+    title: "Specialty Medicines",
+    description: "Advanced therapeutic solutions",
+    icon: Heart
+  }, {
+    title: "Generic Medications",
+    description: "Affordable treatment options",
+    icon: Shield
+  }, {
+    title: "OTC Medications",
+    description: "Over-the-counter solutions",
+    icon: CheckCircle
+  }, {
+    title: "Active Ingredients",
+    description: "Quality API manufacturing",
+    icon: Building
+  }];
+  return <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="gradient-hero text-white py-20 md:py-32">
         <div className="container mx-auto px-4">
@@ -71,15 +77,13 @@ const Index = () => {
       <section className="py-16 bg-accent">
         <div className="container mx-auto px-4">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <Card key={index} className="text-center shadow-card">
+            {stats.map((stat, index) => <Card key={index} className="text-center shadow-card">
                 <CardContent className="pt-6">
                   <stat.icon className="h-8 w-8 text-primary mx-auto mb-4" />
                   <div className="text-lg font-bold text-primary mb-1">{stat.value}</div>
                   <div className="text-sm text-muted-foreground">{stat.label}</div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -147,31 +151,27 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 gap-12 items-center mb-16">
             <div className="space-y-6">
-              {productCategories.map((category, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-background rounded-lg shadow-sm">
+              {productCategories.map((category, index) => <div key={index} className="flex items-center justify-between p-4 bg-background rounded-lg shadow-sm">
                   <span className="font-medium">{category.name}</span>
                   <span className="text-primary font-bold">{category.percentage}</span>
-                </div>
-              ))}
+                </div>)}
             </div>
             
             <div className="grid grid-cols-2 gap-6">
-              {services.map((service, index) => (
-                <Card key={index} className="text-center shadow-card">
+              {services.map((service, index) => <Card key={index} className="text-center shadow-card">
                   <CardContent className="pt-6">
                     <service.icon className="h-8 w-8 text-primary mx-auto mb-3" />
                     <h4 className="font-semibold mb-2">{service.title}</h4>
                     <p className="text-sm text-muted-foreground">{service.description}</p>
                   </CardContent>
-                </Card>
-              ))}
+                </Card>)}
             </div>
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-primary text-white">
+      <section className="py-16 bg-gradient-primary text-white bg-blue-600">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold">
@@ -198,8 +198,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Index;

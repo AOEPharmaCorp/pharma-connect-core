@@ -1,11 +1,9 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
 const Footer = () => {
-  return (
-    <footer className="bg-card border-t">
-      <div className="container mx-auto px-4 py-12">
+  return <footer className="bg-card border-t">
+      <div className="container mx-auto px-4 py-12 bg-blue-50">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -37,28 +35,16 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Company</h3>
             <nav className="space-y-2">
-              <Link
-                to="/about"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/about" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 About Us
               </Link>
-              <Link
-                to="/quality"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/quality" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Quality & Compliance
               </Link>
-              <Link
-                to="/careers"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/careers" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Careers
               </Link>
-              <Link
-                to="/news"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/news" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 News & Press
               </Link>
             </nav>
@@ -68,22 +54,13 @@ const Footer = () => {
           <div className="space-y-4">
             <h3 className="text-lg font-semibold">Legal</h3>
             <nav className="space-y-2">
-              <Link
-                to="/privacy"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/privacy" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Privacy Policy
               </Link>
-              <Link
-                to="/terms"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/terms" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Terms of Use
               </Link>
-              <Link
-                to="/disclaimer"
-                className="block text-sm text-muted-foreground hover:text-primary transition-colors"
-              >
+              <Link to="/disclaimer" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Disclaimer
               </Link>
             </nav>
@@ -102,19 +79,13 @@ const Footer = () => {
               </div>
               <div className="flex items-center space-x-3">
                 <Mail className="h-4 w-4 text-primary flex-shrink-0" />
-                <a
-                  href="mailto:info@aoepharma.com"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
+                <a href="mailto:info@aoepharma.com" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   info@aoepharma.com
                 </a>
               </div>
               <div className="flex items-center space-x-3">
                 <Phone className="h-4 w-4 text-primary flex-shrink-0" />
-                <a
-                  href="tel:+971123456789"
-                  className="text-sm text-muted-foreground hover:text-primary transition-colors"
-                >
+                <a href="tel:+971123456789" className="text-sm text-muted-foreground hover:text-primary transition-colors">
                   +971 12 345 6789
                 </a>
               </div>
@@ -123,15 +94,15 @@ const Footer = () => {
         </div>
 
         {/* Certifications */}
-        <div className="mt-12 pt-8 border-t">
+        <div className="mt-12 pt-8 border-t bg-blue-50">
           <div className="text-center space-y-4">
             <h4 className="text-sm font-semibold text-muted-foreground">Certified & Compliant</h4>
             <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-muted-foreground">
-              <span className="px-3 py-1 bg-accent rounded-full">WHO-GMP</span>
-              <span className="px-3 py-1 bg-accent rounded-full">EU GMP</span>
-              <span className="px-3 py-1 bg-accent rounded-full">USFDA</span>
-              <span className="px-3 py-1 bg-accent rounded-full">ISO Certified</span>
-              <span className="px-3 py-1 bg-accent rounded-full">GLP</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">WHO-GMP</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">EU GMP</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">USFDA</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">ISO Certified</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">GLP</span>
             </div>
           </div>
         </div>
@@ -146,8 +117,6 @@ const Footer = () => {
           </p>
         </div>
       </div>
-    </footer>
-  );
+    </footer>;
 };
-
 export default Footer;
