@@ -2,93 +2,51 @@ import { Shield, Award, CheckCircle, Users, Building, FileCheck, Microscope, Set
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
 const Quality = () => {
-  const certifications = [
-    {
-      title: "WHO-GMP",
-      description: "World Health Organization Good Manufacturing Practices",
-      status: "Certified",
-      icon: Shield
-    },
-    {
-      title: "EU GMP",
-      description: "European Union Good Manufacturing Practices",
-      status: "Compliant",
-      icon: Award
-    },
-    {
-      title: "USFDA",
-      description: "United States Food and Drug Administration",
-      status: "Registered",
-      icon: FileCheck
-    },
-    {
-      title: "ISO 9001:2015",
-      description: "Quality Management Systems",
-      status: "Certified",
-      icon: Settings
-    }
-  ];
-
-  const qualityPillars = [
-    {
-      title: "Manufacturing Excellence",
-      description: "State-of-the-art facilities with cutting-edge technology and automated systems.",
-      icon: Building,
-      features: [
-        "Clean room manufacturing environments",
-        "Advanced automation and robotics",
-        "Real-time monitoring systems",
-        "Validated manufacturing processes"
-      ]
-    },
-    {
-      title: "Quality Control & Testing",
-      description: "Comprehensive analytical testing ensuring product safety, purity, and potency.",
-      icon: Microscope,
-      features: [
-        "In-house analytical laboratories",
-        "Stability testing programs",
-        "Microbiological testing",
-        "Raw material qualification"
-      ]
-    },
-    {
-      title: "Regulatory Compliance",
-      description: "Full adherence to international regulatory standards and guidelines.",
-      icon: FileCheck,
-      features: [
-        "ICH guideline compliance",
-        "FDA registration maintenance",
-        "EU GMP inspections",
-        "Continuous regulatory updates"
-      ]
-    },
-    {
-      title: "Quality Assurance",
-      description: "Systematic quality assurance programs ensuring consistent product quality.",
-      icon: CheckCircle,
-      features: [
-        "Quality risk management",
-        "Change control procedures",
-        "Supplier qualification",
-        "Deviation management"
-      ]
-    }
-  ];
-
-  const complianceStandards = [
-    "Good Manufacturing Practices (GMP)",
-    "Good Laboratory Practices (GLP)",
-    "International Council for Harmonisation (ICH)",
-    "Pharmaceutical Inspection Convention (PIC/S)",
-    "World Health Organization (WHO) Guidelines",
-    "Current Good Manufacturing Practice (cGMP)"
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const certifications = [{
+    title: "WHO-GMP",
+    description: "World Health Organization Good Manufacturing Practices",
+    status: "Certified",
+    icon: Shield
+  }, {
+    title: "EU GMP",
+    description: "European Union Good Manufacturing Practices",
+    status: "Compliant",
+    icon: Award
+  }, {
+    title: "USFDA",
+    description: "United States Food and Drug Administration",
+    status: "Registered",
+    icon: FileCheck
+  }, {
+    title: "ISO 9001:2015",
+    description: "Quality Management Systems",
+    status: "Certified",
+    icon: Settings
+  }];
+  const qualityPillars = [{
+    title: "Manufacturing Excellence",
+    description: "State-of-the-art facilities with cutting-edge technology and automated systems.",
+    icon: Building,
+    features: ["Clean room manufacturing environments", "Advanced automation and robotics", "Real-time monitoring systems", "Validated manufacturing processes"]
+  }, {
+    title: "Quality Control & Testing",
+    description: "Comprehensive analytical testing ensuring product safety, purity, and potency.",
+    icon: Microscope,
+    features: ["In-house analytical laboratories", "Stability testing programs", "Microbiological testing", "Raw material qualification"]
+  }, {
+    title: "Regulatory Compliance",
+    description: "Full adherence to international regulatory standards and guidelines.",
+    icon: FileCheck,
+    features: ["ICH guideline compliance", "FDA registration maintenance", "EU GMP inspections", "Continuous regulatory updates"]
+  }, {
+    title: "Quality Assurance",
+    description: "Systematic quality assurance programs ensuring consistent product quality.",
+    icon: CheckCircle,
+    features: ["Quality risk management", "Change control procedures", "Supplier qualification", "Deviation management"]
+  }];
+  const complianceStandards = ["Good Manufacturing Practices (GMP)", "Good Laboratory Practices (GLP)", "International Council for Harmonisation (ICH)", "Pharmaceutical Inspection Convention (PIC/S)", "World Health Organization (WHO) Guidelines", "Current Good Manufacturing Practice (cGMP)"];
+  return <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="gradient-hero text-white py-20">
         <div className="container mx-auto px-4">
@@ -119,8 +77,7 @@ const Quality = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {certifications.map((cert, index) => (
-              <Card key={index} className="text-center shadow-card hover:shadow-elegant transition-shadow">
+            {certifications.map((cert, index) => <Card key={index} className="text-center shadow-card hover:shadow-elegant transition-shadow">
                 <CardHeader>
                   <cert.icon className="h-12 w-12 text-primary mx-auto mb-4" />
                   <CardTitle className="text-lg">{cert.title}</CardTitle>
@@ -131,8 +88,7 @@ const Quality = () => {
                     {cert.status}
                   </Badge>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -149,8 +105,7 @@ const Quality = () => {
           </div>
           
           <div className="grid md:grid-cols-2 gap-8">
-            {qualityPillars.map((pillar, index) => (
-              <Card key={index} className="shadow-card">
+            {qualityPillars.map((pillar, index) => <Card key={index} className="shadow-card">
                 <CardHeader>
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-lg bg-primary/10 flex items-center justify-center">
@@ -164,16 +119,13 @@ const Quality = () => {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-2">
-                    {pillar.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2">
+                    {pillar.features.map((feature, idx) => <div key={idx} className="flex items-center gap-2">
                         <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
                         <span className="text-sm">{feature}</span>
-                      </div>
-                    ))}
+                      </div>)}
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -229,12 +181,10 @@ const Quality = () => {
               </CardHeader>
               <CardContent>
                 <div className="space-y-3">
-                  {complianceStandards.map((standard, index) => (
-                    <div key={index} className="flex items-center gap-3 p-3 bg-accent rounded-lg">
+                  {complianceStandards.map((standard, index) => <div key={index} className="flex items-center gap-3 p-3 bg-accent rounded-lg">
                       <CheckCircle className="h-4 w-4 text-primary flex-shrink-0" />
                       <span className="text-sm font-medium">{standard}</span>
-                    </div>
-                  ))}
+                    </div>)}
                 </div>
               </CardContent>
             </Card>
@@ -297,7 +247,7 @@ const Quality = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-primary text-white">
+      <section className="py-16 bg-gradient-primary text-white bg-blue-800">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold">
@@ -318,8 +268,6 @@ const Quality = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Quality;
