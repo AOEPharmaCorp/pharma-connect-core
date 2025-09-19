@@ -2,97 +2,63 @@ import { Users, Award, Globe, TrendingUp, CheckCircle, MapPin, Clock, DollarSign
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
 const Careers = () => {
-  const benefits = [
-    {
-      title: "Health & Wellness",
-      description: "Comprehensive health insurance and wellness programs",
-      icon: Award
-    },
-    {
-      title: "Professional Growth",
-      description: "Continuous learning opportunities and career advancement",
-      icon: TrendingUp
-    },
-    {
-      title: "Global Exposure",
-      description: "Work with international teams across multiple markets",
-      icon: Globe
-    },
-    {
-      title: "Work-Life Balance",
-      description: "Flexible working arrangements and generous time off",
-      icon: Clock
-    }
-  ];
-
-  const openPositions = [
-    {
-      title: "Senior Regulatory Affairs Manager",
-      department: "Quality & Regulatory",
-      location: "Dubai, UAE",
-      type: "Full-time",
-      experience: "5+ years",
-      description: "Lead regulatory submissions and maintain compliance across global markets.",
-      requirements: [
-        "Bachelor's degree in Life Sciences or related field",
-        "5+ years of regulatory affairs experience",
-        "Knowledge of WHO, FDA, and EU regulations",
-        "Strong communication and project management skills"
-      ]
-    },
-    {
-      title: "Business Development Executive",
-      department: "Sales & Marketing",
-      location: "Mumbai, India",
-      type: "Full-time", 
-      experience: "3+ years",
-      description: "Drive business growth through strategic partnerships and market expansion.",
-      requirements: [
-        "Bachelor's degree in Business or related field",
-        "3+ years of pharmaceutical sales experience",
-        "Strong network in pharmaceutical industry",
-        "Excellent negotiation and presentation skills"
-      ]
-    },
-    {
-      title: "Quality Assurance Specialist",
-      department: "Quality Control",
-      location: "Dubai, UAE",
-      type: "Full-time",
-      experience: "2+ years",
-      description: "Ensure quality standards and compliance across manufacturing operations.",
-      requirements: [
-        "Bachelor's degree in Chemistry, Pharmacy, or related field",
-        "2+ years of QA experience in pharmaceuticals",
-        "Knowledge of GMP and quality systems",
-        "Attention to detail and analytical skills"
-      ]
-    }
-  ];
-
-  const companyValues = [
-    {
-      title: "Innovation",
-      description: "Fostering creativity and continuous improvement in everything we do"
-    },
-    {
-      title: "Integrity",
-      description: "Operating with transparency, honesty, and ethical principles"
-    },
-    {
-      title: "Excellence",
-      description: "Striving for the highest standards in quality and performance"
-    },
-    {
-      title: "Collaboration",
-      description: "Working together as a global team to achieve common goals"
-    }
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
+  const benefits = [{
+    title: "Health & Wellness",
+    description: "Comprehensive health insurance and wellness programs",
+    icon: Award
+  }, {
+    title: "Professional Growth",
+    description: "Continuous learning opportunities and career advancement",
+    icon: TrendingUp
+  }, {
+    title: "Global Exposure",
+    description: "Work with international teams across multiple markets",
+    icon: Globe
+  }, {
+    title: "Work-Life Balance",
+    description: "Flexible working arrangements and generous time off",
+    icon: Clock
+  }];
+  const openPositions = [{
+    title: "Senior Regulatory Affairs Manager",
+    department: "Quality & Regulatory",
+    location: "Dubai, UAE",
+    type: "Full-time",
+    experience: "5+ years",
+    description: "Lead regulatory submissions and maintain compliance across global markets.",
+    requirements: ["Bachelor's degree in Life Sciences or related field", "5+ years of regulatory affairs experience", "Knowledge of WHO, FDA, and EU regulations", "Strong communication and project management skills"]
+  }, {
+    title: "Business Development Executive",
+    department: "Sales & Marketing",
+    location: "Mumbai, India",
+    type: "Full-time",
+    experience: "3+ years",
+    description: "Drive business growth through strategic partnerships and market expansion.",
+    requirements: ["Bachelor's degree in Business or related field", "3+ years of pharmaceutical sales experience", "Strong network in pharmaceutical industry", "Excellent negotiation and presentation skills"]
+  }, {
+    title: "Quality Assurance Specialist",
+    department: "Quality Control",
+    location: "Dubai, UAE",
+    type: "Full-time",
+    experience: "2+ years",
+    description: "Ensure quality standards and compliance across manufacturing operations.",
+    requirements: ["Bachelor's degree in Chemistry, Pharmacy, or related field", "2+ years of QA experience in pharmaceuticals", "Knowledge of GMP and quality systems", "Attention to detail and analytical skills"]
+  }];
+  const companyValues = [{
+    title: "Innovation",
+    description: "Fostering creativity and continuous improvement in everything we do"
+  }, {
+    title: "Integrity",
+    description: "Operating with transparency, honesty, and ethical principles"
+  }, {
+    title: "Excellence",
+    description: "Striving for the highest standards in quality and performance"
+  }, {
+    title: "Collaboration",
+    description: "Working together as a global team to achieve common goals"
+  }];
+  return <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="gradient-hero text-white py-20">
         <div className="container mx-auto px-4">
@@ -123,15 +89,13 @@ const Careers = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            {benefits.map((benefit, index) => (
-              <Card key={index} className="text-center shadow-card">
+            {benefits.map((benefit, index) => <Card key={index} className="text-center shadow-card">
                 <CardContent className="pt-8">
                   <benefit.icon className="h-12 w-12 text-primary mx-auto mb-4" />
                   <h3 className="text-xl font-semibold mb-3">{benefit.title}</h3>
                   <p className="text-muted-foreground">{benefit.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -148,16 +112,14 @@ const Careers = () => {
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {companyValues.map((value, index) => (
-              <Card key={index} className="shadow-card">
+            {companyValues.map((value, index) => <Card key={index} className="shadow-card">
                 <CardHeader>
                   <CardTitle className="text-lg text-center">{value.title}</CardTitle>
                 </CardHeader>
                 <CardContent>
                   <p className="text-sm text-muted-foreground text-center">{value.description}</p>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -174,8 +136,7 @@ const Careers = () => {
           </div>
           
           <div className="space-y-8">
-            {openPositions.map((position, index) => (
-              <Card key={index} className="shadow-elegant">
+            {openPositions.map((position, index) => <Card key={index} className="shadow-elegant">
                 <CardHeader>
                   <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4">
                     <div className="space-y-2">
@@ -208,18 +169,15 @@ const Careers = () => {
                     <div>
                       <h4 className="font-semibold mb-3">Key Requirements:</h4>
                       <div className="grid md:grid-cols-2 gap-2">
-                        {position.requirements.map((req, idx) => (
-                          <div key={idx} className="flex items-start gap-2">
+                        {position.requirements.map((req, idx) => <div key={idx} className="flex items-start gap-2">
                             <CheckCircle className="h-4 w-4 text-primary mt-1 flex-shrink-0" />
                             <span className="text-sm">{req}</span>
-                          </div>
-                        ))}
+                          </div>)}
                       </div>
                     </div>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
           
           <div className="text-center mt-12">
@@ -321,7 +279,7 @@ const Careers = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-primary text-white">
+      <section className="py-16 bg-gradient-primary text-white bg-blue-800">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold">
@@ -342,8 +300,6 @@ const Careers = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default Careers;
