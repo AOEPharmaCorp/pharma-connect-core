@@ -261,7 +261,7 @@ const Quality = () => {
               <Button size="lg" variant="secondary" className="text-primary">
                 Request Quality Documentation
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+              <Button size="lg" variant="outline" className="border-white text-white bg-white/10 hover:bg-white hover:text-primary backdrop-blur-sm">
                 Schedule Quality Audit
               </Button>
             </div>
