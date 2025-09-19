@@ -171,7 +171,7 @@ const Index = () => {
       </section>
 
       {/* CTA Section */}
-      <section className="py-16 bg-gradient-primary text-white bg-blue-600">
+      <section className="py-16 bg-gradient-primary text-white bg-blue-800">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-4xl mx-auto space-y-6">
             <h2 className="text-3xl md:text-4xl font-bold">
