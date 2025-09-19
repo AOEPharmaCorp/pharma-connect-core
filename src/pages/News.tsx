@@ -2,7 +2,6 @@ import { Calendar, ArrowRight, Tag, Clock, User } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-
 const News = () => {
   const featuredNews = {
     title: "AOE Pharma Expands Operations to Eastern Europe with New Strategic Partnership",
@@ -12,68 +11,50 @@ const News = () => {
     readTime: "5 min read",
     image: "/placeholder-news-hero.jpg"
   };
-
-  const newsArticles = [
-    {
-      title: "New WHO-GMP Certification Achieved for Advanced Manufacturing Facility",
-      excerpt: "Our latest manufacturing partner receives WHO-GMP certification, reinforcing our commitment to quality excellence.",
-      date: "2024-03-10",
-      category: "Quality & Compliance",
-      readTime: "3 min read",
-      author: "Quality Team"
-    },
-    {
-      title: "AOE Pharma Announces Breakthrough in Oncology Product Development",
-      excerpt: "Collaboration with research institutions leads to innovative oncology therapeutic solutions for emerging markets.",
-      date: "2024-03-05",
-      category: "Product Development",
-      readTime: "4 min read",
-      author: "R&D Department"
-    },
-    {
-      title: "Sustainability Initiative: Eco-Friendly Packaging Solutions Launched",
-      excerpt: "Introduction of biodegradable packaging materials across our product portfolio demonstrates environmental commitment.",
-      date: "2024-02-28",
-      category: "Sustainability",
-      readTime: "3 min read",
-      author: "Operations Team"
-    },
-    {
-      title: "Partnership with Leading African Healthcare Distributor",
-      excerpt: "Strategic collaboration expands access to essential medications across West African markets.",
-      date: "2024-02-20",
-      category: "Business Expansion",
-      readTime: "4 min read",
-      author: "Business Development"
-    },
-    {
-      title: "AOE Pharma Receives Excellence Award for Quality Innovation",
-      excerpt: "Recognition from international pharmaceutical association for outstanding contributions to quality management.",
-      date: "2024-02-15",
-      category: "Awards & Recognition",
-      readTime: "2 min read",
-      author: "Corporate Communications"
-    },
-    {
-      title: "Digital Transformation: New Supply Chain Management System",
-      excerpt: "Implementation of advanced digital platform enhances supply chain efficiency and real-time tracking capabilities.",
-      date: "2024-02-10",
-      category: "Technology",
-      readTime: "3 min read",
-      author: "IT Department"
-    }
-  ];
-
-  const categories = [
-    "All News",
-    "Business Expansion",
-    "Product Development", 
-    "Quality & Compliance",
-    "Awards & Recognition",
-    "Sustainability",
-    "Technology"
-  ];
-
+  const newsArticles = [{
+    title: "New WHO-GMP Certification Achieved for Advanced Manufacturing Facility",
+    excerpt: "Our latest manufacturing partner receives WHO-GMP certification, reinforcing our commitment to quality excellence.",
+    date: "2024-03-10",
+    category: "Quality & Compliance",
+    readTime: "3 min read",
+    author: "Quality Team"
+  }, {
+    title: "AOE Pharma Announces Breakthrough in Oncology Product Development",
+    excerpt: "Collaboration with research institutions leads to innovative oncology therapeutic solutions for emerging markets.",
+    date: "2024-03-05",
+    category: "Product Development",
+    readTime: "4 min read",
+    author: "R&D Department"
+  }, {
+    title: "Sustainability Initiative: Eco-Friendly Packaging Solutions Launched",
+    excerpt: "Introduction of biodegradable packaging materials across our product portfolio demonstrates environmental commitment.",
+    date: "2024-02-28",
+    category: "Sustainability",
+    readTime: "3 min read",
+    author: "Operations Team"
+  }, {
+    title: "Partnership with Leading African Healthcare Distributor",
+    excerpt: "Strategic collaboration expands access to essential medications across West African markets.",
+    date: "2024-02-20",
+    category: "Business Expansion",
+    readTime: "4 min read",
+    author: "Business Development"
+  }, {
+    title: "AOE Pharma Receives Excellence Award for Quality Innovation",
+    excerpt: "Recognition from international pharmaceutical association for outstanding contributions to quality management.",
+    date: "2024-02-15",
+    category: "Awards & Recognition",
+    readTime: "2 min read",
+    author: "Corporate Communications"
+  }, {
+    title: "Digital Transformation: New Supply Chain Management System",
+    excerpt: "Implementation of advanced digital platform enhances supply chain efficiency and real-time tracking capabilities.",
+    date: "2024-02-10",
+    category: "Technology",
+    readTime: "3 min read",
+    author: "IT Department"
+  }];
+  const categories = ["All News", "Business Expansion", "Product Development", "Quality & Compliance", "Awards & Recognition", "Sustainability", "Technology"];
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString('en-US', {
@@ -82,9 +63,7 @@ const News = () => {
       day: 'numeric'
     });
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="gradient-hero text-white py-20">
         <div className="container mx-auto px-4">
@@ -147,16 +126,9 @@ const News = () => {
       <section className="pb-8">
         <div className="container mx-auto px-4">
           <div className="flex flex-wrap gap-2 justify-center">
-            {categories.map((category, index) => (
-              <Button
-                key={index}
-                variant={index === 0 ? "default" : "outline"}
-                size="sm"
-                className={index === 0 ? "gradient-primary text-white" : ""}
-              >
+            {categories.map((category, index) => <Button key={index} variant={index === 0 ? "default" : "outline"} size="sm" className={index === 0 ? "gradient-primary text-white" : ""}>
                 {category}
-              </Button>
-            ))}
+              </Button>)}
           </div>
         </div>
       </section>
@@ -165,8 +137,7 @@ const News = () => {
       <section className="pb-20">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {newsArticles.map((article, index) => (
-              <Card key={index} className="shadow-card hover:shadow-elegant transition-shadow group cursor-pointer">
+            {newsArticles.map((article, index) => <Card key={index} className="shadow-card hover:shadow-elegant transition-shadow group cursor-pointer">
                 <CardHeader>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
@@ -206,8 +177,7 @@ const News = () => {
                     </Button>
                   </div>
                 </CardContent>
-              </Card>
-            ))}
+              </Card>)}
           </div>
         </div>
       </section>
@@ -227,11 +197,7 @@ const News = () => {
                 </div>
                 
                 <div className="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-                  <input
-                    type="email"
-                    placeholder="Enter your email address"
-                    className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
-                  />
+                  <input type="email" placeholder="Enter your email address" className="flex-1 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary" />
                   <Button className="gradient-primary text-white">
                     Subscribe
                   </Button>
@@ -248,7 +214,7 @@ const News = () => {
       </section>
 
       {/* Media Contact */}
-      <section className="py-16 bg-gradient-primary text-white">
+      <section className="py-16 bg-gradient-primary text-white bg-blue-800">
         <div className="container mx-auto px-4 text-center">
           <div className="max-w-3xl mx-auto space-y-6">
             <h2 className="text-3xl font-bold">
@@ -269,8 +235,6 @@ const News = () => {
           </div>
         </div>
       </section>
-    </div>
-  );
+    </div>;
 };
-
 export default News;
