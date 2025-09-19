@@ -186,7 +186,7 @@ const News = () => {
       <section className="py-20 bg-accent">
         <div className="container mx-auto px-4">
           <Card className="max-w-2xl mx-auto shadow-elegant">
-            <CardContent className="p-8 text-center">
+            <CardContent className="py-16 px-8 text-center">
               <div className="space-y-6">
                 <div className="space-y-2">
                   <h3 className="text-2xl font-bold">Stay Informed</h3>
