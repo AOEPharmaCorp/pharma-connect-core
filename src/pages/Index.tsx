@@ -189,7 +189,7 @@ const Index = () => {
                 </Button>
               </Link>
               <Link to="/products">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+                <Button size="lg" variant="outline" className="border-white/80 text-white bg-white/10 hover:bg-white hover:text-primary backdrop-blur-sm">
                   Browse Product Catalog
                   <ArrowRight className="h-4 w-4 ml-2" />
                 </Button>
