@@ -24,8 +24,8 @@ interface Product {
 
 const Products = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedCategory, setSelectedCategory] = useState("");
-  const [selectedForm, setSelectedForm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedForm, setSelectedForm] = useState("all");
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
   const [showAll, setShowAll] = useState(false);
@@ -113,8 +113,8 @@ const Products = () => {
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.category.toLowerCase().includes(searchTerm.toLowerCase()) ||
                           product.dosage_form.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "" || product.category === selectedCategory;
-      const matchesForm = selectedForm === "" || product.dosage_form === selectedForm;
+      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
+      const matchesForm = selectedForm === "all" || product.dosage_form === selectedForm;
       
       return matchesSearch && matchesCategory && matchesForm;
     });
@@ -133,7 +133,7 @@ const Products = () => {
     }, {} as Record<string, Product[]>);
 
     // If searching or filtering, show all results
-    if (searchTerm || selectedCategory || selectedForm) {
+    if (searchTerm || (selectedCategory && selectedCategory !== "all") || (selectedForm && selectedForm !== "all")) {
       return Object.entries(grouped).map(([category, categoryProducts]) => ({
         category,
         products: categoryProducts,
@@ -153,8 +153,8 @@ const Products = () => {
 
   const clearFilters = () => {
     setSearchTerm("");
-    setSelectedCategory("");
-    setSelectedForm("");
+    setSelectedCategory("all");
+    setSelectedForm("all");
   };
 
   const totalDisplayed = categorizedProducts.reduce((sum, cat) => sum + cat.showingCount, 0);
@@ -237,7 +237,7 @@ const Products = () => {
                 <SelectValue placeholder="Filter by category" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Categories</SelectItem>
+                <SelectItem value="all">All Categories</SelectItem>
                 {categories.map(category => (
                   <SelectItem key={category} value={category}>
                     {category}
@@ -252,7 +252,7 @@ const Products = () => {
                 <SelectValue placeholder="Filter by dosage form" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Forms</SelectItem>
+                <SelectItem value="all">All Forms</SelectItem>
                 {dosageForms.map(form => (
                   <SelectItem key={form} value={form}>
                     {form}
@@ -267,7 +267,7 @@ const Products = () => {
               <p className="text-muted-foreground">
                 Showing {totalDisplayed} of {totalAvailable} products
               </p>
-              {!showAll && totalDisplayed < totalAvailable && !searchTerm && !selectedCategory && !selectedForm && (
+              {!showAll && totalDisplayed < totalAvailable && !searchTerm && selectedCategory === "all" && selectedForm === "all" && (
                 <p className="text-sm text-muted-foreground">
                   Displaying 25 products per category. <Button variant="link" className="p-0 h-auto text-primary" onClick={() => setShowAll(true)}>Show all products</Button>
                 </p>
@@ -341,7 +341,7 @@ const Products = () => {
                     ))}
                   </div>
                   
-                  {!showAll && showingCount < totalCount && !searchTerm && !selectedCategory && !selectedForm && (
+                  {!showAll && showingCount < totalCount && !searchTerm && selectedCategory === "all" && selectedForm === "all" && (
                     <div className="text-center mt-8">
                       <Button 
                         variant="outline" 
