@@ -1,59 +1,68 @@
-import { useState, useMemo } from "react";
+import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Download, Phone, Mail } from "lucide-react";
-
-// Product data structure based on the uploaded document
-const products = [
-  { id: 1, name: "Lidocaine and Epinephrine Injection", strength: "1%w/v and 1:100000", form: "Injectable", category: "Anaesthetic" },
-  { id: 2, name: "Lidocain and adrenaline Injection", strength: "2% + 1:50000", form: "Injectable", category: "Anaesthetic" },
-  { id: 3, name: "Lidocaine and Prilocaine Cream", strength: "2%w/w + 2.5%w/w", form: "Creams/Ointment", category: "Anaesthetic" },
-  { id: 4, name: "Nimesulide Injection", strength: "100mg/ml", form: "Injectable", category: "Analgesics Anti-inflammatory" },
-  { id: 5, name: "Caffeine and Ephedrine and Paracetamol Tablets", strength: "20Mg + 6mg + 200mg", form: "Tablets", category: "Analgesics Anti-inflammatory" },
-  { id: 6, name: "Dried Aluminum Hydroxide Gel Tablets", strength: "500mg", form: "Tablets", category: "Antacid" },
-  { id: 7, name: "Magnesium Trisilicate Tablets", strength: "500mg", form: "Tablets", category: "Antacid" },
-  { id: 8, name: "Simethicone with Dill Oil Solution", strength: "1%w/v+0.5% v/v", form: "Liquid Orals", category: "Antacid" },
-  { id: 9, name: "Magnesium Trisilicate Syrup", strength: "3.33%", form: "Liquid Orals", category: "Antacid" },
-  { id: 10, name: "Aluminium and Magnesium Hydroxide Suspension", strength: "523.5 mg+598.5 mg/15ml", form: "Liquid Orals", category: "Antacid" },
-  { id: 11, name: "Calcium Carbonate Chewable Tablets", strength: "1.25 g", form: "Tablets", category: "Antacid" },
-  { id: 12, name: "Rabeprazole and Domperidone Tablets", strength: "20mg+30mg", form: "Tablets", category: "Antacid" },
-  { id: 13, name: "Palonosetron Hydrochloride Injection", strength: "0.05mg/ml", form: "Injectable", category: "Antacid" },
-  { id: 14, name: "Esomeprazole Sodium For Injection", strength: "40mg", form: "Injectable", category: "Antacid" },
-  { id: 15, name: "Omeprazole Capsules", strength: "20mg", form: "Capsules", category: "Antacid" },
-  // Additional products for demonstration - in real implementation, parse all from document
-  { id: 16, name: "Amoxicillin Capsules", strength: "500mg", form: "Capsules", category: "Antibiotics" },
-  { id: 17, name: "Ciprofloxacin Tablets", strength: "500mg", form: "Tablets", category: "Antibiotics" },
-  { id: 18, name: "Azithromycin Tablets", strength: "250mg", form: "Tablets", category: "Antibiotics" },
-  { id: 19, name: "Metformin Tablets", strength: "500mg", form: "Tablets", category: "Antidiabetic" },
-  { id: 20, name: "Insulin Injection", strength: "100 IU/ml", form: "Injectable", category: "Antidiabetic" },
-  { id: 21, name: "Amlodipine Tablets", strength: "5mg", form: "Tablets", category: "Cardiovascular" },
-  { id: 22, name: "Atorvastatin Tablets", strength: "20mg", form: "Tablets", category: "Cardiovascular" },
-  { id: 23, name: "Doxorubicin Injection", strength: "50mg", form: "Injectable", category: "Oncology" },
-  { id: 24, name: "Carboplatin Injection", strength: "150mg", form: "Injectable", category: "Oncology" },
-  { id: 25, name: "Paclitaxel Injection", strength: "100mg", form: "Injectable", category: "Oncology" },
-];
-
-const categories = Array.from(new Set(products.map(p => p.category))).sort();
-const dosageForms = Array.from(new Set(products.map(p => p.form))).sort();
+import { Skeleton } from "@/components/ui/skeleton";
+import { Search, Filter, Download, Phone, Mail, Plus, ShoppingCart } from "lucide-react";
+import { useProducts, Product } from "@/hooks/useProducts";
+import QuoteRequestForm from "@/components/QuoteRequestForm";
+import { useToast } from "@/hooks/use-toast";
 
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
   const [selectedForm, setSelectedForm] = useState("all");
+  const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
+  const [isQuoteFormOpen, setIsQuoteFormOpen] = useState(false);
+  
+  const { products, categories, dosageForms, loading, error, searchProducts } = useProducts();
+  const { toast } = useToast();
 
-  const filteredProducts = useMemo(() => {
-    return products.filter(product => {
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                           product.strength.toLowerCase().includes(searchTerm.toLowerCase());
-      const matchesCategory = selectedCategory === "all" || product.category === selectedCategory;
-      const matchesForm = selectedForm === "all" || product.form === selectedForm;
-      
-      return matchesSearch && matchesCategory && matchesForm;
-    });
+  // Debounced search effect
+  useEffect(() => {
+    const timeoutId = setTimeout(() => {
+      searchProducts(searchTerm, selectedCategory, selectedForm);
+    }, 300);
+
+    return () => clearTimeout(timeoutId);
   }, [searchTerm, selectedCategory, selectedForm]);
+
+  const handleAddToQuote = (product: Product) => {
+    const isAlreadySelected = selectedProducts.some(p => p.id === product.id);
+    
+    if (isAlreadySelected) {
+      toast({
+        title: "Product Already Selected",
+        description: "This product is already in your quote request.",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setSelectedProducts(prev => [...prev, product]);
+    toast({
+      title: "Product Added",
+      description: `${product.generic_name} has been added to your quote request.`,
+    });
+  };
+
+  const handleRemoveFromQuote = (productId: string) => {
+    setSelectedProducts(prev => prev.filter(p => p.id !== productId));
+  };
+
+  const handleOpenQuoteForm = () => {
+    if (selectedProducts.length === 0) {
+      toast({
+        title: "No Products Selected",
+        description: "Please select at least one product to request a quote.",
+        variant: "destructive"
+      });
+      return;
+    }
+    setIsQuoteFormOpen(true);
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -132,12 +141,25 @@ export default function Products() {
 
           <div className="flex justify-between items-center mt-6">
             <p className="text-muted-foreground">
-              Showing {filteredProducts.length} of {products.length} products
+              Showing {products.length} products
+              {selectedProducts.length > 0 && (
+                <span className="ml-4 text-primary font-medium">
+                  {selectedProducts.length} selected for quote
+                </span>
+              )}
             </p>
-            <Button variant="outline" className="gap-2">
-              <Download className="h-4 w-4" />
-              Download Product Catalog
-            </Button>
+            <div className="flex gap-2">
+              {selectedProducts.length > 0 && (
+                <Button onClick={handleOpenQuoteForm} className="gap-2">
+                  <ShoppingCart className="h-4 w-4" />
+                  Request Quote ({selectedProducts.length})
+                </Button>
+              )}
+              <Button variant="outline" className="gap-2">
+                <Download className="h-4 w-4" />
+                Download Product Catalog
+              </Button>
+            </div>
           </div>
         </div>
       </section>
@@ -145,59 +167,104 @@ export default function Products() {
       {/* Products Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {filteredProducts.map((product) => (
-              <Card key={product.id} className="hover:shadow-lg transition-shadow">
-                <CardHeader>
-                  <div className="flex justify-between items-start gap-2">
-                    <CardTitle className="text-lg leading-tight">{product.name}</CardTitle>
-                    <Badge variant="secondary" className="shrink-0">
-                      {product.form}
-                    </Badge>
-                  </div>
-                  <CardDescription className="text-primary font-semibold">
-                    {product.strength}
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-3">
-                    <div>
-                      <span className="text-sm text-muted-foreground">Category:</span>
-                      <Badge variant="outline" className="ml-2">
-                        {product.category}
-                      </Badge>
-                    </div>
-                    <div className="flex gap-2 pt-2">
-                      <Button size="sm" className="flex-1">
-                        Request Quote
-                      </Button>
-                      <Button variant="outline" size="sm" className="flex-1">
-                        View Details
-                      </Button>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-
-          {filteredProducts.length === 0 && (
+          {loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({ length: 9 }).map((_, index) => (
+                <Card key={index}>
+                  <CardHeader>
+                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-4 w-1/2" />
+                  </CardHeader>
+                  <CardContent>
+                    <Skeleton className="h-4 w-full mb-2" />
+                    <Skeleton className="h-8 w-full" />
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          ) : error ? (
             <div className="text-center py-12">
-              <p className="text-muted-foreground text-lg">
-                No products found matching your search criteria.
+              <p className="text-destructive text-lg mb-4">
+                Error loading products: {error}
               </p>
               <Button 
                 variant="outline" 
-                className="mt-4"
-                onClick={() => {
-                  setSearchTerm("");
-                  setSelectedCategory("all");
-                  setSelectedForm("all");
-                }}
+                onClick={() => window.location.reload()}
               >
-                Clear Filters
+                Retry
               </Button>
             </div>
+          ) : (
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {products.map((product) => {
+                  const isSelected = selectedProducts.some(p => p.id === product.id);
+                  
+                  return (
+                    <Card key={product.id} className={`hover:shadow-lg transition-shadow ${isSelected ? 'ring-2 ring-primary' : ''}`}>
+                      <CardHeader>
+                        <div className="flex justify-between items-start gap-2">
+                          <CardTitle className="text-lg leading-tight">{product.generic_name}</CardTitle>
+                          <Badge variant="secondary" className="shrink-0">
+                            {product.dosage_form}
+                          </Badge>
+                        </div>
+                        <CardDescription className="text-primary font-semibold">
+                          {product.category}
+                        </CardDescription>
+                      </CardHeader>
+                      <CardContent>
+                        <div className="space-y-3">
+                          <div className="space-y-2">
+                            <div>
+                              <span className="text-sm text-muted-foreground">MOQ:</span>
+                              <span className="text-sm ml-2">{product.moq}</span>
+                            </div>
+                            <div>
+                              <span className="text-sm text-muted-foreground">Pricing:</span>
+                              <span className="text-sm ml-2">{product.pricing}</span>
+                            </div>
+                          </div>
+                          <div className="flex gap-2 pt-2">
+                            <Button 
+                              size="sm" 
+                              className="flex-1 gap-1"
+                              onClick={() => handleAddToQuote(product)}
+                              disabled={isSelected}
+                              variant={isSelected ? "secondary" : "default"}
+                            >
+                              {isSelected ? "Added" : <><Plus className="h-3 w-3" /> Add to Quote</>}
+                            </Button>
+                            <Button variant="outline" size="sm" className="flex-1">
+                              View Details
+                            </Button>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  );
+                })}
+              </div>
+
+              {products.length === 0 && !loading && (
+                <div className="text-center py-12">
+                  <p className="text-muted-foreground text-lg">
+                    No products found matching your search criteria.
+                  </p>
+                  <Button 
+                    variant="outline" 
+                    className="mt-4"
+                    onClick={() => {
+                      setSearchTerm("");
+                      setSelectedCategory("all");
+                      setSelectedForm("all");
+                    }}
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </section>
@@ -224,6 +291,14 @@ export default function Products() {
           </div>
         </div>
       </section>
+
+      {/* Quote Request Form */}
+      <QuoteRequestForm
+        isOpen={isQuoteFormOpen}
+        onClose={() => setIsQuoteFormOpen(false)}
+        selectedProducts={selectedProducts}
+        onProductRemove={handleRemoveFromQuote}
+      />
     </div>
   );
 }
