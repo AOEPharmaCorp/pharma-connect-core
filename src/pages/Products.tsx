@@ -8,6 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Search, Filter, Download, Phone, Mail, Plus, ShoppingCart } from "lucide-react";
 import { useProducts, Product } from "@/hooks/useProducts";
 import QuoteRequestForm from "@/components/QuoteRequestForm";
+import ProductDetailsModal from "@/components/ProductDetailsModal";
 import { useToast } from "@/hooks/use-toast";
 
 export default function Products() {
@@ -16,6 +17,8 @@ export default function Products() {
   const [selectedForm, setSelectedForm] = useState("all");
   const [selectedProducts, setSelectedProducts] = useState<Product[]>([]);
   const [isQuoteFormOpen, setIsQuoteFormOpen] = useState(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
   
   const { products, categories, dosageForms, loading, error, searchProducts } = useProducts();
   const { toast } = useToast();
@@ -62,6 +65,11 @@ export default function Products() {
       return;
     }
     setIsQuoteFormOpen(true);
+  };
+
+  const handleViewDetails = (product: Product) => {
+    setSelectedProduct(product);
+    setIsDetailsModalOpen(true);
   };
 
   return (
@@ -235,7 +243,12 @@ export default function Products() {
                             >
                               {isSelected ? "Added" : <><Plus className="h-3 w-3" /> Add to Quote</>}
                             </Button>
-                            <Button variant="outline" size="sm" className="flex-1">
+                            <Button 
+                              variant="outline" 
+                              size="sm" 
+                              className="flex-1"
+                              onClick={() => handleViewDetails(product)}
+                            >
                               View Details
                             </Button>
                           </div>
@@ -298,6 +311,13 @@ export default function Products() {
         onClose={() => setIsQuoteFormOpen(false)}
         selectedProducts={selectedProducts}
         onProductRemove={handleRemoveFromQuote}
+      />
+
+      {/* Product Details Modal */}
+      <ProductDetailsModal
+        product={selectedProduct}
+        isOpen={isDetailsModalOpen}
+        onClose={() => setIsDetailsModalOpen(false)}
       />
     </div>
   );
