@@ -14,45 +14,7 @@ export type Database = {
   }
   public: {
     Tables: {
-      products: {
-        Row: {
-          category: string
-          created_at: string
-          delivery_timeline: string | null
-          dosage_form: string
-          id: string
-          moq: string | null
-          name: string
-          pricing: string | null
-          serial_number: number | null
-          updated_at: string
-        }
-        Insert: {
-          category: string
-          created_at?: string
-          delivery_timeline?: string | null
-          dosage_form: string
-          id?: string
-          moq?: string | null
-          name: string
-          pricing?: string | null
-          serial_number?: number | null
-          updated_at?: string
-        }
-        Update: {
-          category?: string
-          created_at?: string
-          delivery_timeline?: string | null
-          dosage_form?: string
-          id?: string
-          moq?: string | null
-          name?: string
-          pricing?: string | null
-          serial_number?: number | null
-          updated_at?: string
-        }
-        Relationships: []
-      }
+      [_ in never]: never
     }
     Views: {
       [_ in never]: never
