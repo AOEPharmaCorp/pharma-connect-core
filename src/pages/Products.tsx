@@ -76,7 +76,7 @@ export default function Products() {
       <section className="bg-gradient-to-b from-primary/5 to-background py-16 bg-blue-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
-            <h1 className="text-4xl font-bold text-foreground mb-4">
+            <h1 className="font-bold mb-4 text-5xl text-stone-50">
               Comprehensive Product Portfolio
             </h1>
             <p className="text-xl text-muted-foreground max-w-3xl mx-auto">
