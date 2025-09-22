@@ -11,7 +11,6 @@ import Products from "./pages/Products";
 import Quality from "./pages/Quality";
 import Contact from "./pages/Contact";
 import Careers from "./pages/Careers";
-import News from "./pages/News";
 import Privacy from "./pages/Privacy";
 import Terms from "./pages/Terms";
 import Disclaimer from "./pages/Disclaimer";
@@ -35,7 +34,6 @@ const App = () => (
               <Route path="/quality" element={<Quality />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/careers" element={<Careers />} />
-              <Route path="/news" element={<News />} />
               <Route path="/privacy" element={<Privacy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/disclaimer" element={<Disclaimer />} />

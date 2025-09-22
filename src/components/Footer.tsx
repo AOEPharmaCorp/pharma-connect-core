@@ -7,7 +7,7 @@ import zakupivliLogo from "@/assets/zakupivli-logo.png";
 import prozorroLogo from "@/assets/prozorro-logo.png";
 const Footer = () => {
   return <footer className="bg-card border-t">
-      <div className="container mx-auto px-4 py-12 bg-blue-50">
+      <div className="container mx-auto px-4 py-12">
         {/* Main Footer Content */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
@@ -44,9 +44,6 @@ const Footer = () => {
               </Link>
               <Link to="/careers" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
                 Careers
-              </Link>
-              <Link to="/news" className="block text-sm text-muted-foreground hover:text-primary transition-colors">
-                News & Press
               </Link>
             </nav>
           </div>
@@ -128,15 +125,15 @@ const Footer = () => {
         </div>
 
         {/* Certifications */}
-        <div className="mt-12 pt-8 border-t bg-blue-50">
+        <div className="mt-12 pt-8 border-t">
           <div className="text-center space-y-4">
             <h4 className="text-sm font-semibold text-muted-foreground">Certified & Compliant</h4>
             <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-muted-foreground">
-              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">WHO-GMP</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">EU GMP</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">USFDA</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">ISO Certified</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-gray-950">GLP</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-foreground">WHO-GMP</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-foreground">EU GMP</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-foreground">USFDA</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-foreground">ISO Certified</span>
+              <span className="px-3 py-1 bg-accent rounded-full text-foreground">GLP</span>
             </div>
           </div>
         </div>

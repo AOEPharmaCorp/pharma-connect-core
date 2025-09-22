@@ -1,8 +1,12 @@
+import { useState } from "react";
 import { Users, Award, Globe, TrendingUp, CheckCircle, MapPin, Clock, DollarSign } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import CareerApplicationForm from "@/components/CareerApplicationForm";
 const Careers = () => {
+  const [isApplicationFormOpen, setIsApplicationFormOpen] = useState(false);
+  const [selectedPosition, setSelectedPosition] = useState("");
   const benefits = [{
     title: "Health & Wellness",
     description: "Comprehensive health insurance and wellness programs",
@@ -157,7 +161,13 @@ const Careers = () => {
                         </Badge>
                       </div>
                     </div>
-                    <Button className="gradient-primary text-white">
+                    <Button 
+                      className="gradient-primary text-white"
+                      onClick={() => {
+                        setSelectedPosition(position.title);
+                        setIsApplicationFormOpen(true);
+                      }}
+                    >
                       Apply Now
                     </Button>
                   </div>
@@ -184,7 +194,14 @@ const Careers = () => {
             <p className="text-muted-foreground mb-4">
               Don't see the right opportunity? We're always looking for talented individuals.
             </p>
-            <Button variant="outline" size="lg">
+            <Button 
+              variant="outline" 
+              size="lg"
+              onClick={() => {
+                setSelectedPosition("");
+                setIsApplicationFormOpen(true);
+              }}
+            >
               Submit General Application
             </Button>
           </div>
@@ -293,13 +310,27 @@ const Careers = () => {
               <Button size="lg" variant="secondary" className="text-primary">
                 Browse All Positions
               </Button>
-              <Button size="lg" variant="outline" className="border-white hover:bg-white text-blue-700">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white hover:bg-white text-blue-700"
+                onClick={() => {
+                  setSelectedPosition("");
+                  setIsApplicationFormOpen(true);
+                }}
+              >
                 Submit Your Resume
               </Button>
             </div>
           </div>
         </div>
       </section>
+      
+      <CareerApplicationForm
+        isOpen={isApplicationFormOpen}
+        onClose={() => setIsApplicationFormOpen(false)}
+        position={selectedPosition}
+      />
     </div>;
 };
 export default Careers;

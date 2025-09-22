@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroPharmaMain from "@/assets/hero-pharma-main.jpg";
-import heroLab from "@/assets/hero-lab.jpg";
+import CookieBanner from "@/components/CookieBanner";
 const Index = () => {
   const stats = [{
     label: "Global Reach",
@@ -59,14 +59,7 @@ const Index = () => {
             <div 
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{ 
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url(${heroPharmaMain})` 
-              }}
-            />
-            {/* Lab image overlay on the right */}
-            <div 
-              className="absolute right-0 top-0 w-1/3 h-full bg-cover bg-center bg-no-repeat opacity-60"
-              style={{ 
-                backgroundImage: `linear-gradient(to left, rgba(0, 0, 0, 0.3), transparent), url(${heroLab})` 
+                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url(${heroPharmaMain})` 
               }}
             />
           </div>
@@ -254,6 +247,8 @@ const Index = () => {
           </div>
         </div>
       </section>
+      
+      <CookieBanner />
     </div>;
 };
 export default Index;
