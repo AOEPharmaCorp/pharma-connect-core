@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import apcLogo from "@/assets/apc-logo.png";
+import apcLogo from "@/assets/apc-logo-new.png";
 const Header = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
@@ -34,7 +34,7 @@ const Header = () => {
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <img src={apcLogo} alt="APC Pharma Corporation" className="h-10 w-auto" />
+            <img src={apcLogo} alt="APC Pharma Corporation" className="h-12 w-auto" />
           </Link>
 
           {/* Desktop Navigation */}

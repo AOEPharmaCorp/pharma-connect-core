@@ -1,6 +1,10 @@
 import { Link } from "react-router-dom";
 import { Mail, Phone, MapPin, Linkedin, Twitter, Facebook } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import apcLogo from "@/assets/apc-logo-new.png";
+import sapAribaLogo from "@/assets/sap-ariba-logo.png";
+import zakupivliLogo from "@/assets/zakupivli-logo.png";
+import prozorroLogo from "@/assets/prozorro-logo.png";
 const Footer = () => {
   return <footer className="bg-card border-t">
       <div className="container mx-auto px-4 py-12 bg-blue-50">
@@ -8,11 +12,8 @@ const Footer = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Company Info */}
           <div className="space-y-4">
-            <div className="flex items-center space-x-2">
-              <div className="h-8 w-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-                <span className="font-bold text-sm text-blue-800">APC</span>
-              </div>
-              <span className="text-lg font-bold">AOE Pharma Corporation</span>
+            <div className="flex items-center space-x-3">
+              <img src={apcLogo} alt="APC Pharma Corporation" className="h-10 w-auto" />
             </div>
             <p className="text-muted-foreground text-sm leading-relaxed">
               Leading provider of high-quality, affordable healthcare solutions globally. 
@@ -89,6 +90,39 @@ const Footer = () => {
                   +971 12 345 6789
                 </a>
               </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Find Us On Section */}
+        <div className="mt-12 pt-8 border-t">
+          <div className="text-center space-y-6">
+            <h4 className="text-lg font-semibold text-foreground">Find Us On</h4>
+            <div className="flex flex-wrap justify-center items-center gap-8">
+              <a 
+                href="https://service.ariba.com/" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
+                <img src={sapAribaLogo} alt="SAP Ariba" className="h-12 w-auto" />
+              </a>
+              <a 
+                href="https://zakupivli.pro/en" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
+                <img src={zakupivliLogo} alt="Zakupivli.pro" className="h-12 w-auto" />
+              </a>
+              <a 
+                href="https://prozorro.gov.ua/en" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
+                <img src={prozorroLogo} alt="Prozorro" className="h-12 w-auto" />
+              </a>
             </div>
           </div>
         </div>
