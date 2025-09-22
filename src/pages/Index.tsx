@@ -3,7 +3,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import heroPharmaMain from "@/assets/hero-pharma-main.jpg";
-import CookieBanner from "@/components/CookieBanner";
+import heroLab from "@/assets/hero-lab.jpg";
 const Index = () => {
   const stats = [{
     label: "Global Reach",
@@ -56,12 +56,13 @@ const Index = () => {
         <div className="absolute inset-0 z-0">
           <div className="relative w-full h-full">
             {/* Main pharmaceutical image */}
-            <div 
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{ 
-                backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url(${heroPharmaMain})` 
-              }}
-            />
+            <div className="absolute inset-0 bg-cover bg-center bg-no-repeat" style={{
+            backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.5)), url(${heroPharmaMain})`
+          }} />
+            {/* Lab image overlay on the right */}
+            <div className="absolute right-0 top-0 w-1/3 h-full bg-cover bg-center bg-no-repeat opacity-60" style={{
+            backgroundImage: `linear-gradient(to left, rgba(0, 0, 0, 0.3), transparent), url(${heroLab})`
+          }} />
           </div>
         </div>
         
@@ -82,9 +83,7 @@ const Index = () => {
                 <Button size="lg" variant="secondary" className="text-primary shadow-lg" asChild>
                   <Link to="/products">Explore Product Portfolio</Link>
                 </Button>
-                <Button size="lg" variant="outline" className="border-white/80 text-white bg-white/10 hover:bg-white hover:text-primary backdrop-blur-sm shadow-lg" asChild>
-                  <Link to="/contact">Request Partnership</Link>
-                </Button>
+                
               </div>
             </div>
             
@@ -110,11 +109,9 @@ const Index = () => {
               <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
                 <h3 className="text-white font-semibold mb-4">Quality Certifications</h3>
                 <div className="flex flex-wrap gap-2">
-                  {["WHO-GMP", "EU GMP", "USFDA", "ISO", "GLP"].map((cert) => (
-                    <span key={cert} className="px-3 py-1 bg-primary/20 text-white text-sm rounded-full border border-primary/30">
+                  {["WHO-GMP", "EU GMP", "USFDA", "ISO", "GLP"].map(cert => <span key={cert} className="px-3 py-1 bg-primary/20 text-white text-sm rounded-full border border-primary/30">
                       {cert}
-                    </span>
-                  ))}
+                    </span>)}
                 </div>
               </div>
             </div>
@@ -247,8 +244,6 @@ const Index = () => {
           </div>
         </div>
       </section>
-      
-      <CookieBanner />
     </div>;
 };
 export default Index;
