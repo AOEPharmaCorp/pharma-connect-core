@@ -96,28 +96,13 @@ const Footer = () => {
           <div className="text-center space-y-6">
             <h4 className="text-lg font-semibold text-foreground">Find Us On</h4>
             <div className="flex flex-wrap justify-center items-center gap-8">
-              <a 
-                href="https://service.ariba.com/" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-              >
+              <a href="https://service.ariba.com/" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                 <img src={sapAribaLogo} alt="SAP Ariba" className="h-12 w-auto" />
               </a>
-              <a 
-                href="https://zakupivli.pro/en" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-              >
+              <a href="https://zakupivli.pro/en" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                 <img src={zakupivliLogo} alt="Zakupivli.pro" className="h-12 w-auto" />
               </a>
-              <a 
-                href="https://prozorro.gov.ua/en" 
-                target="_blank" 
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
-              >
+              <a href="https://prozorro.gov.ua/en" target="_blank" rel="noopener noreferrer" className="flex items-center space-x-2 hover:opacity-80 transition-opacity">
                 <img src={prozorroLogo} alt="Prozorro" className="h-12 w-auto" />
               </a>
             </div>
@@ -125,18 +110,7 @@ const Footer = () => {
         </div>
 
         {/* Certifications */}
-        <div className="mt-12 pt-8 border-t">
-          <div className="text-center space-y-4">
-            <h4 className="text-sm font-semibold text-muted-foreground">Certified & Compliant</h4>
-            <div className="flex flex-wrap justify-center items-center gap-6 text-xs text-muted-foreground">
-              <span className="px-3 py-1 bg-accent rounded-full text-foreground">WHO-GMP</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-foreground">EU GMP</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-foreground">USFDA</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-foreground">ISO Certified</span>
-              <span className="px-3 py-1 bg-accent rounded-full text-foreground">GLP</span>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">

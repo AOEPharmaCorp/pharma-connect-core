@@ -88,33 +88,7 @@ const Index = () => {
             </div>
             
             {/* Visual Elements */}
-            <div className="hidden lg:flex flex-col space-y-6">
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <div className="flex items-center space-x-4 mb-4">
-                  <div className="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
-                  <span className="text-white font-medium">Global Operations Active</span>
-                </div>
-                <div className="grid grid-cols-2 gap-4 text-center">
-                  <div>
-                    <div className="text-2xl font-bold text-white">40+</div>
-                    <div className="text-white/70 text-sm">Countries</div>
-                  </div>
-                  <div>
-                    <div className="text-2xl font-bold text-white">2018</div>
-                    <div className="text-white/70 text-sm">Established</div>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="bg-white/10 backdrop-blur-md rounded-2xl p-6 border border-white/20">
-                <h3 className="text-white font-semibold mb-4">Quality Certifications</h3>
-                <div className="flex flex-wrap gap-2">
-                  {["WHO-GMP", "EU GMP", "USFDA", "ISO", "GLP"].map(cert => <span key={cert} className="px-3 py-1 bg-primary/20 text-white text-sm rounded-full border border-primary/30">
-                      {cert}
-                    </span>)}
-                </div>
-              </div>
-            </div>
+            
           </div>
         </div>
       </section>
