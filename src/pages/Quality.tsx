@@ -58,9 +58,7 @@ const Quality = () => {
               Unwavering commitment to the highest standards of pharmaceutical quality, 
               safety, and regulatory compliance across all our global operations.
             </p>
-            <Button size="lg" variant="secondary" className="text-primary">
-              Download Quality Certificate
-            </Button>
+            
           </div>
         </div>
       </section>
