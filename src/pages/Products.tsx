@@ -10,7 +10,6 @@ import { useProducts, Product } from "@/hooks/useProducts";
 import QuoteRequestForm from "@/components/QuoteRequestForm";
 import ProductDetailsModal from "@/components/ProductDetailsModal";
 import { useToast } from "@/hooks/use-toast";
-
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -19,22 +18,27 @@ export default function Products() {
   const [isQuoteFormOpen, setIsQuoteFormOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
-  
-  const { products, categories, dosageForms, loading, error, searchProducts } = useProducts();
-  const { toast } = useToast();
+  const {
+    products,
+    categories,
+    dosageForms,
+    loading,
+    error,
+    searchProducts
+  } = useProducts();
+  const {
+    toast
+  } = useToast();
 
   // Debounced search effect
   useEffect(() => {
     const timeoutId = setTimeout(() => {
       searchProducts(searchTerm, selectedCategory, selectedForm);
     }, 300);
-
     return () => clearTimeout(timeoutId);
   }, [searchTerm, selectedCategory, selectedForm]);
-
   const handleAddToQuote = (product: Product) => {
     const isAlreadySelected = selectedProducts.some(p => p.id === product.id);
-    
     if (isAlreadySelected) {
       toast({
         title: "Product Already Selected",
@@ -43,18 +47,15 @@ export default function Products() {
       });
       return;
     }
-
     setSelectedProducts(prev => [...prev, product]);
     toast({
       title: "Product Added",
-      description: `${product.generic_name} has been added to your quote request.`,
+      description: `${product.generic_name} has been added to your quote request.`
     });
   };
-
   const handleRemoveFromQuote = (productId: string) => {
     setSelectedProducts(prev => prev.filter(p => p.id !== productId));
   };
-
   const handleOpenQuoteForm = () => {
     if (selectedProducts.length === 0) {
       toast({
@@ -66,16 +67,13 @@ export default function Products() {
     }
     setIsQuoteFormOpen(true);
   };
-
   const handleViewDetails = (product: Product) => {
     setSelectedProduct(product);
     setIsDetailsModalOpen(true);
   };
-
-  return (
-    <div className="min-h-screen bg-background">
+  return <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-primary/5 to-background py-16">
+      <section className="bg-gradient-to-b from-primary/5 to-background py-16 bg-blue-800">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12">
             <h1 className="text-4xl font-bold text-foreground mb-4">
@@ -99,14 +97,7 @@ export default function Products() {
               </label>
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4" />
-                <Input
-                  id="search"
-                  type="text"
-                  placeholder="Search by product name or strength..."
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="pl-10"
-                />
+                <Input id="search" type="text" placeholder="Search by product name or strength..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
               </div>
             </div>
             
@@ -121,9 +112,7 @@ export default function Products() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Categories</SelectItem>
-                  {categories.map(category => (
-                    <SelectItem key={category} value={category}>{category}</SelectItem>
-                  ))}
+                  {categories.map(category => <SelectItem key={category} value={category}>{category}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -139,9 +128,7 @@ export default function Products() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Forms</SelectItem>
-                  {dosageForms.map(form => (
-                    <SelectItem key={form} value={form}>{form}</SelectItem>
-                  ))}
+                  {dosageForms.map(form => <SelectItem key={form} value={form}>{form}</SelectItem>)}
                 </SelectContent>
               </Select>
             </div>
@@ -150,19 +137,15 @@ export default function Products() {
           <div className="flex justify-between items-center mt-6">
             <p className="text-muted-foreground">
               Showing {products.length} products
-              {selectedProducts.length > 0 && (
-                <span className="ml-4 text-primary font-medium">
+              {selectedProducts.length > 0 && <span className="ml-4 text-primary font-medium">
                   {selectedProducts.length} selected for quote
-                </span>
-              )}
+                </span>}
             </p>
             <div className="flex gap-2">
-              {selectedProducts.length > 0 && (
-                <Button onClick={handleOpenQuoteForm} className="gap-2">
+              {selectedProducts.length > 0 && <Button onClick={handleOpenQuoteForm} className="gap-2">
                   <ShoppingCart className="h-4 w-4" />
                   Request Quote ({selectedProducts.length})
-                </Button>
-              )}
+                </Button>}
               <Button variant="outline" className="gap-2">
                 <Download className="h-4 w-4" />
                 Download Product Catalog
@@ -175,10 +158,10 @@ export default function Products() {
       {/* Products Grid */}
       <section className="py-12">
         <div className="container mx-auto px-4">
-          {loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {Array.from({ length: 9 }).map((_, index) => (
-                <Card key={index}>
+          {loading ? <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array.from({
+            length: 9
+          }).map((_, index) => <Card key={index}>
                   <CardHeader>
                     <Skeleton className="h-6 w-3/4" />
                     <Skeleton className="h-4 w-1/2" />
@@ -187,29 +170,19 @@ export default function Products() {
                     <Skeleton className="h-4 w-full mb-2" />
                     <Skeleton className="h-8 w-full" />
                   </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : error ? (
-            <div className="text-center py-12">
+                </Card>)}
+            </div> : error ? <div className="text-center py-12">
               <p className="text-destructive text-lg mb-4">
                 Error loading products: {error}
               </p>
-              <Button 
-                variant="outline" 
-                onClick={() => window.location.reload()}
-              >
+              <Button variant="outline" onClick={() => window.location.reload()}>
                 Retry
               </Button>
-            </div>
-          ) : (
-            <>
+            </div> : <>
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map((product) => {
-                  const isSelected = selectedProducts.some(p => p.id === product.id);
-                  
-                  return (
-                    <Card key={product.id} className={`hover:shadow-lg transition-shadow ${isSelected ? 'ring-2 ring-primary' : ''}`}>
+                {products.map(product => {
+              const isSelected = selectedProducts.some(p => p.id === product.id);
+              return <Card key={product.id} className={`hover:shadow-lg transition-shadow ${isSelected ? 'ring-2 ring-primary' : ''}`}>
                       <CardHeader>
                         <div className="flex justify-between items-start gap-2">
                           <CardTitle className="text-lg leading-tight">{product.generic_name}</CardTitle>
@@ -234,51 +207,32 @@ export default function Products() {
                             </div>
                           </div>
                           <div className="flex gap-2 pt-2">
-                            <Button 
-                              size="sm" 
-                              className="flex-1 gap-1"
-                              onClick={() => handleAddToQuote(product)}
-                              disabled={isSelected}
-                              variant={isSelected ? "secondary" : "default"}
-                            >
+                            <Button size="sm" className="flex-1 gap-1" onClick={() => handleAddToQuote(product)} disabled={isSelected} variant={isSelected ? "secondary" : "default"}>
                               {isSelected ? "Added" : <><Plus className="h-3 w-3" /> Add to Quote</>}
                             </Button>
-                            <Button 
-                              variant="outline" 
-                              size="sm" 
-                              className="flex-1"
-                              onClick={() => handleViewDetails(product)}
-                            >
+                            <Button variant="outline" size="sm" className="flex-1" onClick={() => handleViewDetails(product)}>
                               View Details
                             </Button>
                           </div>
                         </div>
                       </CardContent>
-                    </Card>
-                  );
-                })}
+                    </Card>;
+            })}
               </div>
 
-              {products.length === 0 && !loading && (
-                <div className="text-center py-12">
+              {products.length === 0 && !loading && <div className="text-center py-12">
                   <p className="text-muted-foreground text-lg">
                     No products found matching your search criteria.
                   </p>
-                  <Button 
-                    variant="outline" 
-                    className="mt-4"
-                    onClick={() => {
-                      setSearchTerm("");
-                      setSelectedCategory("all");
-                      setSelectedForm("all");
-                    }}
-                  >
+                  <Button variant="outline" className="mt-4" onClick={() => {
+              setSearchTerm("");
+              setSelectedCategory("all");
+              setSelectedForm("all");
+            }}>
                     Clear Filters
                   </Button>
-                </div>
-              )}
-            </>
-          )}
+                </div>}
+            </>}
         </div>
       </section>
 
@@ -306,19 +260,9 @@ export default function Products() {
       </section>
 
       {/* Quote Request Form */}
-      <QuoteRequestForm
-        isOpen={isQuoteFormOpen}
-        onClose={() => setIsQuoteFormOpen(false)}
-        selectedProducts={selectedProducts}
-        onProductRemove={handleRemoveFromQuote}
-      />
+      <QuoteRequestForm isOpen={isQuoteFormOpen} onClose={() => setIsQuoteFormOpen(false)} selectedProducts={selectedProducts} onProductRemove={handleRemoveFromQuote} />
 
       {/* Product Details Modal */}
-      <ProductDetailsModal
-        product={selectedProduct}
-        isOpen={isDetailsModalOpen}
-        onClose={() => setIsDetailsModalOpen(false)}
-      />
-    </div>
-  );
+      <ProductDetailsModal product={selectedProduct} isOpen={isDetailsModalOpen} onClose={() => setIsDetailsModalOpen(false)} />
+    </div>;
 }
