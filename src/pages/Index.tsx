@@ -2,6 +2,7 @@ import { Globe, Award, Users, Target, ArrowRight, CheckCircle, Building, Heart, 
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
+import pharmaHeroBg from "@/assets/pharma-hero-bg.jpg";
 const Index = () => {
   const stats = [{
     label: "Global Reach",
@@ -49,8 +50,11 @@ const Index = () => {
   }];
   return <div className="min-h-screen bg-background">
       {/* Hero Section */}
-      <section className="gradient-hero text-white py-20 md:py-32">
-        <div className="container mx-auto px-4">
+      <section 
+        className="relative text-white py-20 md:py-32 bg-cover bg-center bg-no-repeat"
+        style={{ backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.6)), url(${pharmaHeroBg})` }}
+      >
+        <div className="container mx-auto px-4 relative z-10">
           <div className="max-w-6xl mx-auto text-center space-y-8">
             <h1 className="text-4xl md:text-7xl font-bold leading-tight">
               Premier B2B
