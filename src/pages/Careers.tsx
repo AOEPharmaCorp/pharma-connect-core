@@ -293,7 +293,7 @@ const Careers = () => {
               <Button size="lg" variant="secondary" className="text-primary">
                 Browse All Positions
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-primary">
+              <Button size="lg" variant="outline" className="border-white hover:bg-white text-blue-700">
                 Submit Your Resume
               </Button>
             </div>
