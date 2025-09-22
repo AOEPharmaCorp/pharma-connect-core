@@ -146,10 +146,7 @@ export default function Products() {
                   <ShoppingCart className="h-4 w-4" />
                   Request Quote ({selectedProducts.length})
                 </Button>}
-              <Button variant="outline" className="gap-2">
-                <Download className="h-4 w-4" />
-                Download Product Catalog
-              </Button>
+              
             </div>
           </div>
         </div>
