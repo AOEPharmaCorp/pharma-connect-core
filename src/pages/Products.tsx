@@ -198,9 +198,9 @@ export default function Products() {
                         <div className="flex justify-between items-start gap-2">
                           <div>
                             <CardTitle className="text-lg leading-tight">{product.generic_name}</CardTitle>
-                            {product.serial_number && (
+                            {product.product_code && (
                               <p className="text-sm text-muted-foreground font-mono">
-                                Code: {product.serial_number}
+                                Code: {product.product_code}
                               </p>
                             )}
                           </div>

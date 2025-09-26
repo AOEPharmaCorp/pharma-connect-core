@@ -3,7 +3,7 @@ import { supabase } from '@/integrations/supabase/client';
 
 export interface Product {
   id: string;
-  serial_number: number | null;
+  product_code: string | null;
   generic_name: string;
   dosage_form: string;
   category: string;
@@ -28,7 +28,7 @@ export const useProducts = () => {
       const { data, error: fetchError } = await (supabase as any)
         .from('products')
         .select('*')
-        .order('serial_number', { ascending: true });
+        .order('product_code', { ascending: true });
 
       if (fetchError) {
         throw fetchError;
@@ -59,7 +59,7 @@ export const useProducts = () => {
       let query = (supabase as any)
         .from('products')
         .select('*')
-        .order('serial_number', { ascending: true });
+        .order('product_code', { ascending: true });
 
       // Apply filters
       if (searchTerm) {
