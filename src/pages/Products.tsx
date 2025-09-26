@@ -5,11 +5,12 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Filter, Download, Phone, Mail, Plus, ShoppingCart } from "lucide-react";
+import { Search, Filter, Download, Phone, Mail, Plus, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
 import { useProducts, Product } from "@/hooks/useProducts";
 import QuoteRequestForm from "@/components/QuoteRequestForm";
 import ProductDetailsModal from "@/components/ProductDetailsModal";
 import { useToast } from "@/hooks/use-toast";
+import { Link } from "react-router-dom";
 export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -18,6 +19,8 @@ export default function Products() {
   const [isQuoteFormOpen, setIsQuoteFormOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDetailsModalOpen, setIsDetailsModalOpen] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const PRODUCTS_PER_PAGE = 25;
   const {
     products,
     categories,
@@ -71,6 +74,18 @@ export default function Products() {
     setSelectedProduct(product);
     setIsDetailsModalOpen(true);
   };
+
+  // Calculate pagination
+  const totalProducts = products.length;
+  const totalPages = Math.ceil(totalProducts / PRODUCTS_PER_PAGE);
+  const startIndex = (currentPage - 1) * PRODUCTS_PER_PAGE;
+  const endIndex = startIndex + PRODUCTS_PER_PAGE;
+  const currentProducts = products.slice(startIndex, endIndex);
+
+  // Reset to page 1 when filters change
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchTerm, selectedCategory, selectedForm]);
   return <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="bg-gradient-to-b from-primary/5 to-background py-16 bg-blue-800">
@@ -136,7 +151,7 @@ export default function Products() {
 
           <div className="flex justify-between items-center mt-6">
             <p className="text-muted-foreground">
-              Showing {products.length} products
+              Showing {startIndex + 1}-{Math.min(endIndex, totalProducts)} of {totalProducts} products
               {selectedProducts.length > 0 && <span className="ml-4 text-primary font-medium">
                   {selectedProducts.length} selected for quote
                 </span>}
@@ -146,7 +161,6 @@ export default function Products() {
                   <ShoppingCart className="h-4 w-4" />
                   Request Quote ({selectedProducts.length})
                 </Button>}
-              
             </div>
           </div>
         </div>
@@ -176,13 +190,20 @@ export default function Products() {
                 Retry
               </Button>
             </div> : <>
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products.map(product => {
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+                {currentProducts.map(product => {
               const isSelected = selectedProducts.some(p => p.id === product.id);
               return <Card key={product.id} className={`hover:shadow-lg transition-shadow ${isSelected ? 'ring-2 ring-primary' : ''}`}>
                       <CardHeader>
                         <div className="flex justify-between items-start gap-2">
-                          <CardTitle className="text-lg leading-tight">{product.generic_name}</CardTitle>
+                          <div>
+                            <CardTitle className="text-lg leading-tight">{product.generic_name}</CardTitle>
+                            {product.serial_number && (
+                              <p className="text-sm text-muted-foreground font-mono">
+                                Code: {product.serial_number}
+                              </p>
+                            )}
+                          </div>
                           <Badge variant="secondary" className="shrink-0">
                             {product.dosage_form}
                           </Badge>
@@ -217,6 +238,59 @@ export default function Products() {
             })}
               </div>
 
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-8">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                  >
+                    <ChevronLeft className="h-4 w-4" />
+                    Previous
+                  </Button>
+                  
+                  <div className="flex items-center gap-2">
+                    {Array.from({ length: Math.min(5, totalPages) }, (_, i) => {
+                      const pageNum = i + 1;
+                      return (
+                        <Button
+                          key={pageNum}
+                          variant={currentPage === pageNum ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(pageNum)}
+                        >
+                          {pageNum}
+                        </Button>
+                      );
+                    })}
+                    {totalPages > 5 && (
+                      <>
+                        <span className="text-muted-foreground">...</span>
+                        <Button
+                          variant={currentPage === totalPages ? "default" : "outline"}
+                          size="sm"
+                          onClick={() => setCurrentPage(totalPages)}
+                        >
+                          {totalPages}
+                        </Button>
+                      </>
+                    )}
+                  </div>
+
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                    <ChevronRight className="h-4 w-4" />
+                  </Button>
+                </div>
+              )}
+
               {products.length === 0 && !loading && <div className="text-center py-12">
                   <p className="text-muted-foreground text-lg">
                     No products found matching your search criteria.
@@ -244,13 +318,17 @@ export default function Products() {
             regulatory documentation, and partnership opportunities.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="gap-2">
-              <Phone className="h-5 w-5" />
-              Contact Sales Team
+            <Button size="lg" className="gap-2" asChild>
+              <Link to="/contact">
+                <Phone className="h-5 w-5" />
+                Contact Sales Team
+              </Link>
             </Button>
-            <Button variant="outline" size="lg" className="gap-2">
-              <Mail className="h-5 w-5" />
-              Request Product Catalog
+            <Button variant="outline" size="lg" className="gap-2" asChild>
+              <Link to="/contact">
+                <Mail className="h-5 w-5" />
+                Request Product Catalog
+              </Link>
             </Button>
           </div>
         </div>
